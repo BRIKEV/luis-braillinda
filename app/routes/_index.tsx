@@ -34,13 +34,13 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1 className="text-3xl font-bold underline">Luis y braillinda</h1>
-      <Message message={content[0]} />
+      <Message message={content[0].message} author={content[0].author} />
       <Link to={`/?page=${page + 1}`}>Continuar</Link>
       <hr />
       <h2 className="text-2xl font-bold underline">Historia</h2>
       <div>
         {fullContent.map((line, index) => (
-          <p key={index}>{line}</p>
+          <Message key={index} message={line.message} author={line.author} />
         ))}
       </div>
     </div>

@@ -3,11 +3,12 @@ import { BrailleMessage } from './Braille/BrailleMessage';
 
 interface MessageProps {
   message: string;
+  author: string;
 }
 
 const pattern = /<BRAILLE>([a-zA-Z]+)<\/BRAILLE>/g;
 
-const Message: React.FC<MessageProps> = ({ message }) => {
+const Message: React.FC<MessageProps> = ({ author, message }) => {
   const parts: (string | JSX.Element)[] = [];
   // Split the message based on the pattern
   let lastIndex = 0;
@@ -29,6 +30,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
   return (
     <div>
+      <h2>{author}</h2>
       <p>{parts}</p>
     </div>
   );
