@@ -27,13 +27,13 @@ export const bookContent: Content[] = [
   },
   {
     message: 'Pero Braillinda era ciega',
-    author: 'Luis',
+    author: 'Author',
     solution: null,
     exercise: false
   },
   {
     message: '¡Fantástico! -se alegró Braillinda. Y enseguida preguntó-: ¿Y cómo será la «b»? A lo que Luis respondió que debajo de la "a" colocarían otro puntito.',
-    author: 'Luis',
+    author: 'Braillinda',
     solution: null,
     exercise: false
   },

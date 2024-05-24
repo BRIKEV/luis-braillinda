@@ -6,6 +6,7 @@ import Message from "~/components/Messages";
 import { bookContent } from "~/data/content";
 import Log from "~/components/Log";
 import Dictionary from "~/components/Dictionary";
+import { Icon } from "~/components/Icon";
 
 export const meta: MetaFunction = () => {
   return [
@@ -68,13 +69,15 @@ export default function Index() {
       <nav className="mb-2">
         <ul className="list-none flex gap-2">
           <li>
-            <Link to={`/?page=${page}&dictionary=open`} className="main-button">
+            <Link to={`/?page=${page}&dictionary=open`} className="secondary-button">
               Diccionario
+              <Icon icon="dictionary" />
             </Link>
           </li>
           <li>
-            <Link to={`/?page=${page}&log=open`} className="main-button">
+            <Link to={`/?page=${page}&log=open`} className="secondary-button">
               Historico
+              <Icon icon="history" />
             </Link>
           </li>
         </ul>
@@ -82,7 +85,12 @@ export default function Index() {
       <Message message={content.message} author={content.author}>
         {content.exercise ? (
           <ExerciseForm />
-        ): <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>}
+        ): (
+          <div className="flex gap-2">
+            <Link className="secondary-button" to={`/?page=${page - 1}`}>Volver</Link>
+            <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>
+          </div>
+        )}
       </Message>
       <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />
       <Dictionary isOpen={!!dictionary} onClose={handleClose('dictionary')} />
