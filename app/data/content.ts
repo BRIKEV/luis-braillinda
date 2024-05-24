@@ -1,4 +1,12 @@
-export const bookContent = [
+export interface Content {
+  message: string;
+  author: string;
+  solution: string | null;
+  exercise: boolean;
+}
+
+
+export const bookContent: Content[] = [
   {
     message: 'Las hadas leen el presente sobre las aguas quietas, en los remansos de los ríos.',
     author: 'Luis',

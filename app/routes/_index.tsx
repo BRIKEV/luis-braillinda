@@ -1,9 +1,10 @@
 import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import ExerciseForm from "~/components/Form";
 import Message from "~/components/Messages";
 import { bookContent } from "~/data/content";
+import Log from "~/components/Log";
 
 export const meta: MetaFunction = () => {
   return [
@@ -49,21 +50,39 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { page, content, fullContent } = useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const log = searchParams.get('log');
+
+  const handleCloseLog = () => {
+    setSearchParams((prev) => {
+      prev.delete('log');
+      return prev;
+    });
+  };
 
   return (
     <div className="max-w-full m-auto p-4 md:max-w-screen-lg">
       <h1 className="text-3xl font-bold mb-4">Luis y braillinda</h1>
+      <nav className="mb-2">
+        <ul className="list-none flex gap-2">
+          <li>
+            <Link to="#dictionary" className="main-button">
+              Diccionario
+            </Link>
+          </li>
+          <li>
+            <Link to={`/?page=${page}&log=open`} className="main-button">
+              Historico
+            </Link>
+          </li>
+        </ul>
+      </nav>
       <Message message={content.message} author={content.author}>
         {content.exercise ? (
           <ExerciseForm />
         ): <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>}
       </Message>
-      <h2 className="text-2xl font-bold mb-4">Historia</h2>
-      <div>
-        {fullContent.map((line, index) => (
-          <Message key={index} message={line.message} author={line.author} />
-        ))}
-      </div>
+      <Log isOpen={!!log} onClose={handleCloseLog} content={fullContent} />
     </div>
   );
 }
