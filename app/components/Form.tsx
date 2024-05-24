@@ -23,27 +23,29 @@ const ExerciseForm = () => {
           type="text"
           id="solution"
           name="solution"
-          className="border border-gray-300 rounded-md p-1"
+          className="border border-gray-300 rounded-md p-1 block w-full"
         />
       </div>
       <input type="hidden" name="page" value={pageNumber} />
       {fetcher.data?.success && (
         <div>
-          <div className="text-green-500">Correcto!</div>
-          <Link to={`/?page=${pageNumber + 1}`}>Continuar</Link>
+          <div className="text-green-500 mb-2">Correcto!</div>
+          <Link className="main-button" to={`/?page=${pageNumber + 1}`}>Continuar</Link>
         </div>
       )}
       {fetcher.data?.success === false && (
-        <div className="text-red-500">Incorrecto!</div>
+        <div className="text-red-500 mb-2">Incorrecto! prueba otra vez</div>
       )}
-      <button
-        className="bg-blue-500 text-white rounded-md p-1 mb-2"
-        type="submit"
-        disabled={fetcher.state === "loading"}
-        hidden={fetcher.data?.success}
-      >
-        Enviar
-      </button>
+      {!fetcher.data?.success && (
+        <button
+          className="main-button"
+          type="submit"
+          disabled={fetcher.state === "loading"}
+          hidden={fetcher.data?.success}
+        >
+          Comprobar palabra
+        </button>
+      )}
     </fetcher.Form>
   );
 }

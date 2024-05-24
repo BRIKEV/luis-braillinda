@@ -51,14 +51,14 @@ export default function Index() {
   const { page, content, fullContent } = useLoaderData<typeof loader>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1 className="text-3xl font-bold underline">Luis y braillinda</h1>
-      <Message message={content.message} author={content.author} />
-      {content.exercise ? (
-        <ExerciseForm />
-      ): <Link to={`/?page=${page + 1}`}>Continuar</Link>}
-      <hr />
-      <h2 className="text-2xl font-bold underline">Historia</h2>
+    <div className="max-w-full m-auto p-4 md:max-w-screen-lg">
+      <h1 className="text-3xl font-bold mb-4">Luis y braillinda</h1>
+      <Message message={content.message} author={content.author}>
+        {content.exercise ? (
+          <ExerciseForm />
+        ): <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>}
+      </Message>
+      <h2 className="text-2xl font-bold mb-4">Historia</h2>
       <div>
         {fullContent.map((line, index) => (
           <Message key={index} message={line.message} author={line.author} />
