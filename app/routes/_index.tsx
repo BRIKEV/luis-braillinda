@@ -5,6 +5,7 @@ import ExerciseForm from "~/components/Form";
 import Message from "~/components/Messages";
 import { bookContent } from "~/data/content";
 import Log from "~/components/Log";
+import Dictionary from "~/components/Dictionary";
 
 export const meta: MetaFunction = () => {
   return [
@@ -52,10 +53,11 @@ export default function Index() {
   const { page, content, fullContent } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const log = searchParams.get('log');
+  const dictionary = searchParams.get('dictionary');
 
-  const handleCloseLog = () => {
+  const handleClose = (key: string) => () => {
     setSearchParams((prev) => {
-      prev.delete('log');
+      prev.delete(key);
       return prev;
     });
   };
@@ -66,7 +68,7 @@ export default function Index() {
       <nav className="mb-2">
         <ul className="list-none flex gap-2">
           <li>
-            <Link to="#dictionary" className="main-button">
+            <Link to={`/?page=${page}&dictionary=open`} className="main-button">
               Diccionario
             </Link>
           </li>
@@ -82,7 +84,8 @@ export default function Index() {
           <ExerciseForm />
         ): <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>}
       </Message>
-      <Log isOpen={!!log} onClose={handleCloseLog} content={fullContent} />
+      <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />
+      <Dictionary isOpen={!!dictionary} onClose={handleClose('dictionary')} />
     </div>
   );
 }
