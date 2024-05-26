@@ -33,7 +33,7 @@ const Message: React.FC<MessageProps> = ({ author, message, children }) => {
   return (
     <div>
       <div className="bg-white rounded-md shadow-lg border border-gray-300 mb-2">
-        <h2 className="text-lg font-bold bg-violet-700 text-white rounded-tl-md rounded-tr-md px-5 py-2">{author}:</h2>
+        <h3 className="text-lg font-bold bg-violet-700 text-white rounded-tl-md rounded-tr-md px-5 py-2">{author}:</h3>
         <div className="p-5">
           <p className="mb-2">{parts}</p>
           {children}
