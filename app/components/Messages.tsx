@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
 import { BrailleMessage } from './Braille/BrailleMessage';
-import luisImage from '../images/luis.png';
-import braillindaImage from '../images/braillinda.png';
 
 interface MessageProps {
   message: string;
   author: string;
   children?: ReactNode[] | ReactNode;
+  displayImage?: boolean;
 }
 
 const pattern = /<BRAILLE>([a-zA-Z]+)<\/BRAILLE>/g;
@@ -33,10 +32,6 @@ const Message: React.FC<MessageProps> = ({ author, message, children }) => {
   
   return (
     <div>
-      <div className="flex">
-        <img className={`w-1/2 ${author.toLowerCase() === 'luis' ? 'opacity-100': 'opacity-70'}`} src={luisImage} alt="Maestro luis" />
-        <img className={`w-1/2 ${author.toLowerCase() === 'braillinda' ? 'opacity-100' : 'opacity-70'}`} src={braillindaImage} alt="Hada braillinda" />
-      </div>
       <div className="bg-white rounded-md shadow-lg border border-gray-300 mb-2">
         <h2 className="text-lg font-bold bg-violet-700 text-white rounded-tl-md rounded-tr-md px-5 py-2">{author}:</h2>
         <div className="p-5">

@@ -7,6 +7,7 @@ import { bookContent } from "~/data/content";
 import Log from "~/components/Log";
 import Dictionary from "~/components/Dictionary";
 import { Icon } from "~/components/Icon";
+import Avatars from "~/components/Avatars";
 
 export const meta: MetaFunction = () => {
   return [
@@ -82,6 +83,7 @@ export default function Index() {
           </li>
         </ul>
       </nav>
+      <Avatars author={content.author} />
       <Message message={content.message} author={content.author}>
         {content.exercise ? (
           <ExerciseForm />
