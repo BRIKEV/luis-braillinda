@@ -3,6 +3,6 @@ name = "luis-braillinda"
 # Cloudflare Pages will ignore wrangler.toml without this line
 pages_build_output_dir = "./build/client"
 # Fixes "Error: To use the new ReadableStream() constructor"
-compatibility_flags = [ "streams_enable_constructors" ]
+compatibility_flags = [ "nodejs_compat" ]
 # Fixes "compatibility_flags cannot be specified without a compatibility_date"
 compatibility_date = "2024-05-26"
