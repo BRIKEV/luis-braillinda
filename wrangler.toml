@@ -2,3 +2,6 @@
 name = "luis-braillinda"
 # Cloudflare Pages will ignore wrangler.toml without this line
 pages_build_output_dir = "./build/client"
+# Fixes "Error: To use the new ReadableStream() constructor"
+compatibility_flags = [ "streams_enable_constructors" ]
+
