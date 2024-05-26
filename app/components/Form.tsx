@@ -30,7 +30,7 @@ const ExerciseForm = () => {
       {fetcher.data?.success && (
         <div>
           <div className="text-green-500 mb-2">Correcto!</div>
-          <Link className="main-button" to={`/?page=${pageNumber + 1}`}>Continuar</Link>
+          <Link className="main-button" to={`/?page=${pageNumber + 1}`} preventScrollReset>Continuar</Link>
         </div>
       )}
       {fetcher.data?.success === false && (

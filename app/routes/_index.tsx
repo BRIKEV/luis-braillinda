@@ -96,8 +96,8 @@ export default function Index() {
           <ExerciseForm />
         ): (
           <div className="flex gap-2">
-            <Link className="secondary-button" to={`/?page=${page - 1}`}>Volver</Link>
-            <Link className="main-button" to={`/?page=${page + 1}`}>Continuar</Link>
+            <Link className="secondary-button" to={`/?page=${page - 1}`} preventScrollReset>Volver</Link>
+            <Link className="main-button" to={`/?page=${page + 1}`} preventScrollReset>Continuar</Link>
           </div>
         )}
       </Message>
