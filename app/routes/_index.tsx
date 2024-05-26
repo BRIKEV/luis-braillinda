@@ -1,6 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { json } from "@remix-run/cloudflare";
 import ExerciseForm from "~/components/Form";
 import Message from "~/components/Messages";
 import { bookContent } from "~/data/content";
