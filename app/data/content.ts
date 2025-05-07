@@ -45,7 +45,7 @@ export const bookContent: Content[] = [
   },
   {
     message: '¡¡Qué fácil! -exclamó Braillinda, y agregó-: Ya puedo escribir',
-    author: 'Luis',
+    author: 'Braillinda',
     solution: null,
     exercise: false
   },

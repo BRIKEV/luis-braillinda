@@ -1,58 +1,62 @@
-import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
-import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
-import { json } from "@remix-run/cloudflare";
-import ExerciseForm from "~/components/Form";
-import Message from "~/components/Messages";
 import { bookContent } from "~/data/content";
+import type { Route } from "./+types/home";
+import { Link, useSearchParams } from "react-router";
+import { BookA, History } from "lucide-react";
+import Avatars from "~/components/Avatars";
+import Message from "~/components/Messages";
+import ExerciseForm from "~/components/Form";
 import Log from "~/components/Log";
 import Dictionary from "~/components/Dictionary";
-import { Icon } from "~/components/Icon";
-import Avatars from "~/components/Avatars";
+import { Button } from "~/components/ui/button";
 
-export const meta: MetaFunction = () => {
+export function meta({}: Route.MetaArgs) {
   return [
     { title: "Aprende Braille junto a Luis y braillinda" },
     { name: "description", content: "Aprende Braille junto a Luis y braillinda" },
   ];
-};
+}
 
-
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData();
   const userSolution = body.get("solution") as string;
   const page = body.get("page") as string;
   const pageNumber = parseInt(page || "1");
   const findContent = bookContent[pageNumber - 1];
   if (findContent.solution === userSolution) {
-    return json({ success: true });
+    return { success: true };
   }
-  return json({ success: false }, { status: 400 });
+  return new Response(JSON.stringify({ success: false }), {
+    status: 400,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export function loader({ request }: Route.LoaderArgs) {
+  // return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
   const url = new URL(request.url);
-  const page = url.searchParams.get("page");
-  const pageNumber = parseInt(page || "1");
-  const fullContent = bookContent.slice(0, pageNumber);
-  if (page && pageNumber > 1) {
-    const content = bookContent.slice(pageNumber - 1, pageNumber)[0];
+    const page = url.searchParams.get("page");
+    const pageNumber = parseInt(page || "1");
+    const fullContent = bookContent.slice(0, pageNumber);
+    if (page && pageNumber > 1) {
+      const content = bookContent.slice(pageNumber - 1, pageNumber)[0];
+      return {
+        page: pageNumber,
+        content,
+        fullContent
+      };
+    }
+    const content = bookContent.slice(0, 1)[0];
     return {
-      page: pageNumber,
+      page: 1,
       content,
-      fullContent
+      fullContent,
     };
-  }
-  const content = bookContent.slice(0, 1)[0];
-  return {
-    page: 1,
-    content,
-    fullContent,
-  };
-};
+}
 
-export default function Index() {
-  const { page, content, fullContent } = useLoaderData<typeof loader>();
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { page, content, fullContent } = loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
   const log = searchParams.get('log');
   const dictionary = searchParams.get('dictionary');
@@ -77,27 +81,35 @@ export default function Index() {
       <nav className="mb-6">
         <ul className="list-none flex gap-2">
           <li>
-            <Link to={`/?page=${page}&dictionary=open`} className="secondary-button">
-              Diccionario
-              <Icon icon="dictionary" />
-            </Link>
+            <Button asChild variant="outline">
+              <Link to={`/?page=${page}&dictionary=open`}>
+                Diccionario
+                <BookA />
+              </Link>
+            </Button>
           </li>
           <li>
-            <Link to={`/?page=${page}&log=open`} className="secondary-button">
-              Historico
-              <Icon icon="history" />
-            </Link>
+            <Button asChild variant="outline">
+              <Link to={`/?page=${page}&log=open`}>
+                Historico
+                <History />
+              </Link>
+            </Button>
           </li>
         </ul>
       </nav>
       <Avatars author={content.author} />
       <Message message={content.message} author={content.author}>
         {content.exercise ? (
-          <ExerciseForm />
+          <ExerciseForm pageNumber={page} />
         ): (
           <div className="flex gap-2">
-            <Link className="secondary-button" to={`/?page=${page - 1}`} preventScrollReset>Volver</Link>
-            <Link className="main-button" to={`/?page=${page + 1}`} preventScrollReset>Continuar</Link>
+            <Button asChild variant="outline">
+              <Link to={`/?page=${page - 1}`} preventScrollReset>Volver</Link>
+            </Button>
+            <Button asChild>
+              <Link to={`/?page=${page + 1}`} preventScrollReset>Continuar</Link>
+            </Button>
           </div>
         )}
       </Message>

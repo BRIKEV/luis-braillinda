@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { BrailleMessage } from './Braille/BrailleMessage';
 
 interface MessageProps {
@@ -11,7 +11,7 @@ interface MessageProps {
 const pattern = /<BRAILLE>([a-zA-Z]+)<\/BRAILLE>/g;
 
 const Message: React.FC<MessageProps> = ({ author, message, children }) => {
-  const parts: (string | JSX.Element)[] = [];
+  const parts: (string | ReactNode)[] = [];
   // Split the message based on the pattern
   let lastIndex = 0;
   message.replace(pattern, (match, characters, index) => {

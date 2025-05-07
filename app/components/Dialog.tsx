@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 interface Props {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export const Dialog = ({ isOpen, onClose, children }: Props) => {
   return (
     <dialog
       ref={dialogRef}
-      className="border border-gray-300 p-4 pt-6 rounded-lg shadow-lg max-w-2xl"
+      className="border border-gray-300 p-4 pt-6 rounded-lg shadow-lg max-w-2xl m-auto"
       onClose={handleClose}
     >
       <button onClick={handleClose} className="absolute top-2 right-2">

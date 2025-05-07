@@ -1,10 +1,10 @@
-import { Link, useFetcher, useSearchParams } from "@remix-run/react";
+import { Link, useFetcher } from "react-router";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
-const ExerciseForm = () => {
+const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
   const fetcher = useFetcher<{ success: boolean }>();
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const pageNumber = parseInt(page || "1");
   return (
     <fetcher.Form
       method="post"
@@ -13,38 +13,42 @@ const ExerciseForm = () => {
       }}
     >
       <div className="mb-2">
-        <label
+        <Label
           htmlFor="solution"
-          className="block text-sm font-medium text-gray-700"
         >
           Solución:
-        </label>
-        <input
+        </Label>
+        <Input
           type="text"
           id="solution"
           name="solution"
-          className="border border-gray-300 rounded-md p-1 block w-full"
         />
       </div>
       <input type="hidden" name="page" value={pageNumber} />
       {fetcher.data?.success && (
         <div>
           <div className="text-green-500 mb-2">Correcto!</div>
-          <Link className="main-button" to={`/?page=${pageNumber + 1}`} preventScrollReset>Continuar</Link>
+          <Button asChild>
+            <Link className="main-button" to={`/?page=${pageNumber + 1}`} preventScrollReset>Continuar</Link>
+          </Button>
         </div>
       )}
       {fetcher.data?.success === false && (
         <div className="text-red-500 mb-2">Incorrecto! prueba otra vez</div>
       )}
       {!fetcher.data?.success && (
-        <button
-          className="main-button"
-          type="submit"
-          disabled={fetcher.state === "loading"}
-          hidden={fetcher.data?.success}
-        >
-          Comprobar palabra
-        </button>
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link to={`/?page=${pageNumber - 1}`} preventScrollReset>Volver</Link>
+          </Button>
+          <Button
+            type="submit"
+            disabled={fetcher.state === "loading"}
+            hidden={fetcher.data?.success}
+          >
+            Comprobar palabra
+          </Button>
+        </div>
       )}
     </fetcher.Form>
   );
