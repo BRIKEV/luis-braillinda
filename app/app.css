@@ -122,3 +122,8 @@
 a.link {
   @apply text-violet-700 font-semibold underline hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700;
 }
+
+.flip-image {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
