@@ -254,4 +254,112 @@ export const bookContent: Content[] = [
     solution: null,
     exercise: false
   },
+  {
+    message: 'Y si ahora le quito un punto me queda la "e". <BRAILLE>E</BRAILLE> Por lo que puedo escribir:',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '<BRAILLE>LAS ALAS DE</BRAILLE> ¿Qué es lo que a escrito?',
+    author: 'Tu turno',
+    solution: 'LAS ALAS DE',
+    exercise: true
+  },
+  {
+    message: 'O también puedo escribir:',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '<BRAILLE>DALE LAS ALAS A LALA</BRAILLE> ¿Qué es lo que a escrito?',
+    author: 'Tu turno',
+    solution: 'DALE LAS ALAS A LALA',
+    exercise: true
+  },
+  {
+    message: '¡Yo no le doy mis alas a nadie!',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Mejor inventamos más letras ¡Quiero la "o"!',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Ya está la "o" será así: <BRAILLE>O</BRAILLE>',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '¡Fíjate qué guapa me quedó! Ahora puedo escribir:',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '<BRAILLE>EL SOL SALE AL ALBA EL LOBO LO SABE</BRAILLE> ¿Qué es lo que a escrito?',
+    author: 'Tu turno',
+    solution: 'EL SOL SALE AL ALBA EL LOBO LO SABE',
+    exercise: true
+  },
+  {
+    message: 'Esa frase no me gusta nada. ¡Yo quiero escribir que mis alas son bellas. Así que voy a inventar la «m»!',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'El hada, que era muy cascarrabias, le dio una patada al punto 5 de la "o" para subirlo a la posición del punto 4, para formar la "m" <BRAILLE>M</BRAILLE>',
+    author: 'Narrador',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '¡Pobre punto! Lo dejaste temblando. Para consolarlo le agregaré el punto 5 y creo la "n" de esta manera: <BRAILLE>N</BRAILLE>',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'A mí la "n" me importa poco. Ahora escribiré: "Mis alas son las más bellas del mundo".',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'No, no, no. No podrás.',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '¿Por qué no?',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Porque no tienes la letra "i" y la "u".',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Bueno que esperas. Invéntalas tú.',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'La "i" será un espejo de la "e". Así: <BRAILLE>I</BRAILLE>',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
 ];
