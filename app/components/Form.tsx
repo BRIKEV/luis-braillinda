@@ -14,6 +14,7 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
     >
       <div className="mb-2">
         <Label
+          className="mb-2"
           htmlFor="solution"
         >
           Solución:
@@ -27,9 +28,11 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
       <input type="hidden" name="page" value={pageNumber} />
       {fetcher.data?.success && (
         <div>
-          <div className="text-green-500 mb-2">Correcto!</div>
-          <Button asChild>
-            <Link className="main-button" to={`/?page=${pageNumber + 1}`} preventScrollReset>Continuar</Link>
+          <div className="text-green-700 mb-2">Correcto!</div>
+          <Button asChild variant="outline">
+            <Link className="main-button" to={{
+              search: `?page=${pageNumber + 1}`,
+            }} preventScrollReset>Continuar</Link>
           </Button>
         </div>
       )}
@@ -38,13 +41,16 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
       )}
       {!fetcher.data?.success && (
         <div className="flex gap-2">
-          <Button asChild variant="outline">
-            <Link to={`/?page=${pageNumber - 1}`} preventScrollReset>Volver</Link>
+          <Button asChild variant="ghost">
+            <Link to={{
+              search: `?page=${pageNumber - 1}`,
+            }} preventScrollReset>Volver</Link>
           </Button>
           <Button
             type="submit"
             disabled={fetcher.state === "loading"}
             hidden={fetcher.data?.success}
+            variant="outline"
           >
             Comprobar palabra
           </Button>

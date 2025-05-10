@@ -9,8 +9,13 @@ export const BrailleCharacter = ({ character }: Props) => {
   if (!braille) {
     return <span>Invalid character</span>;
   }
+  if (braille === 'space') {
+    return (
+      <span className="block w-10 rounded-md" />
+    );
+  }
   return (
-    <span className="block w-10 border border-solid border-black rounded-md" aria-label={character}>
+    <span className="block w-10 border border-solid border-black rounded-md">
       <span className="grid grid-cols-2 grid-rows-[repeat(3,20px)] justify-items-center items-center">
         {braille.split('').map((value, index) => (
           <span
