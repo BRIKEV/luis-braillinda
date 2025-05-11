@@ -399,8 +399,26 @@ export const bookContent: Content[] = [
     exercise: true
   },
   {
-    message: '¿ Qué ha escrito el hada? Si has seguido con atención el desarrollo de todo lo explicado hasta ahora, podrás leer sin dificultad.<br><br>Repasemos. Hasta el momento conocemos<br> a - b - d - e - i - l - m - n - o - s - u<br><br><BRAILLE>A B D E I L M N O S U</BRAILLE><br>Recuerda que tienes el botón de diccionario en la parte superior para ayudarte a recordar los signos que ya conoces.',
+    message: 'Si has seguido con atención el desarrollo de todo lo explicado hasta ahora, podrás leer sin dificultad.<br><br>Repasemos. Hasta el momento conocemos<br> a - b - d - e - i - l - m - n - o - s - u<br><br><BRAILLE>A B D E I L M N O S U</BRAILLE><br>Recuerda que tienes el botón de diccionario en la parte superior para ayudarte a recordar los signos que ya conoces.',
     author: 'Narrador',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Repaso ¿Qué es lo que puedes leer?: <BRAILLE>MIS MANOS SON LINDAS MIS ALAS SON DE SEDA</BRAILLE>',
+    author: 'Tu turno',
+    solution: 'MIS MANOS SON LINDAS MIS ALAS SON DE SEDA',
+    exercise: true
+  },
+  {
+    message: 'Vas genial. Sigamos con la historia y aprendamos más con Luis y Braillinda.',
+    author: 'Narrador',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Hay algo que no me gusta Luis ¿Cómo haremos con las vocales acentuadas?',
+    author: 'Braillinda',
     solution: null,
     exercise: false
   },

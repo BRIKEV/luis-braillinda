@@ -15,7 +15,7 @@ export const BrailleCharacter = ({ character }: Props) => {
     );
   }
   return (
-    <span className="block w-10 border border-solid border-black rounded-md">
+    <span className="block w-10 border border-solid border-y-neutral-400 rounded-md">
       <span className="grid grid-cols-2 grid-rows-[repeat(3,20px)] justify-items-center items-center">
         {braille.split('').map((value, index) => (
           <span
