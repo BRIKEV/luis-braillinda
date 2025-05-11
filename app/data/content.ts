@@ -362,4 +362,46 @@ export const bookContent: Content[] = [
     solution: null,
     exercise: false
   },
+  {
+    message: '¿Y no me confundiré la una con la "e"?',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Pero no, mujer. La «e» se deja «caeeeeer». Así, ¿ves? <BRAILLE>E</BRAILLE>',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'En cambio a la «i» le gusta subiiiiir, así: <BRAILLE>I</BRAILLE>',
+    author: 'Luis',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'En fin... Espero acordarme. La «u» mejor la invento yo. Cojo el punto 5 de la «o» y lo bajo al lugar del 6: <BRAILLE>U</BRAILLE>',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: 'Y yo por fin podré escribir:',
+    author: 'Braillinda',
+    solution: null,
+    exercise: false
+  },
+  {
+    message: '<BRAILLE>MIS ALAS SON LAS MAS BELLAS DEL MUNDO</BRAILLE> ¿Qué es lo que a escrito?',
+    author: 'Tu turno',
+    solution: 'MIS ALAS SON LAS MAS BELLAS DEL MUNDO',
+    exercise: true
+  },
+  {
+    message: '¿ Qué ha escrito el hada? Si has seguido con atención el desarrollo de todo lo explicado hasta ahora, podrás leer sin dificultad.<br><br>Repasemos. Hasta el momento conocemos<br> a - b - d - e - i - l - m - n - o - s - u<br><br><BRAILLE>ABDEILMNOSU</BRAILLE><br>Recuerda que tienes el botón de diccionario en la parte superior para ayudarte a recordar los signos que ya conoces.',
+    author: 'Narrador',
+    solution: null,
+    exercise: false
+  },
 ];

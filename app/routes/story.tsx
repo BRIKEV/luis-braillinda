@@ -110,7 +110,9 @@ export default function Story({ loaderData }: Route.ComponentProps) {
           </div>
         )}
       </Messages>
-      <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />
+      {!!log && (
+        <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />
+      )}
       <Dictionary isOpen={!!dictionary} onClose={handleClose('dictionary')} />
     </div>
   );
