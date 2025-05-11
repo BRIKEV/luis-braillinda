@@ -399,7 +399,7 @@ export const bookContent: Content[] = [
     exercise: true
   },
   {
-    message: '¿ Qué ha escrito el hada? Si has seguido con atención el desarrollo de todo lo explicado hasta ahora, podrás leer sin dificultad.<br><br>Repasemos. Hasta el momento conocemos<br> a - b - d - e - i - l - m - n - o - s - u<br><br><BRAILLE>ABDEILMNOSU</BRAILLE><br>Recuerda que tienes el botón de diccionario en la parte superior para ayudarte a recordar los signos que ya conoces.',
+    message: '¿ Qué ha escrito el hada? Si has seguido con atención el desarrollo de todo lo explicado hasta ahora, podrás leer sin dificultad.<br><br>Repasemos. Hasta el momento conocemos<br> a - b - d - e - i - l - m - n - o - s - u<br><br><BRAILLE>A B D E I L M N O S U</BRAILLE><br>Recuerda que tienes el botón de diccionario en la parte superior para ayudarte a recordar los signos que ya conoces.',
     author: 'Narrador',
     solution: null,
     exercise: false
