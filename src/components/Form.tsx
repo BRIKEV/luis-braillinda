@@ -29,11 +29,11 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
       {fetcher.data?.success && (
         <div>
           <div className="text-green-700 mb-2">Correcto!</div>
-          <Button asChild variant="outline">
-            <Link className="main-button" to={{
+          <Button variant="outline" render={(
+            <Link to={{
               search: `?page=${pageNumber + 1}`,
             }} preventScrollReset>Continuar</Link>
-          </Button>
+          )} />
         </div>
       )}
       {fetcher.data?.success === false && (
@@ -41,11 +41,11 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
       )}
       {!fetcher.data?.success && (
         <div className="flex gap-2">
-          <Button asChild variant="ghost">
+          <Button variant="ghost" render={(
             <Link to={{
               search: `?page=${pageNumber - 1}`,
             }} preventScrollReset>Volver</Link>
-          </Button>
+          )} />
           <Button
             type="submit"
             disabled={fetcher.state === "loading"}
