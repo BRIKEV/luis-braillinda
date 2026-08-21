@@ -96,39 +96,58 @@ between words.
 
 ### UI stack
 
-- **Tailwind v4**, CSS-first: no `tailwind.config`; the theme lives in `@theme inline` / `:root` blocks
-  in `src/index.css`, along with the handful of custom classes (`a.link`, `.flip-image`).
-- **shadcn on base-ui** (`components.json`: style `base-nova`, `@base-ui/react`), generated components
-  in `src/components/ui/`. Icons from `lucide-react`.
-- **base-ui, not Radix**: to render a component as something else use the `render` prop
-  (`<Button render={<Link to="…">…</Link>} />`). `asChild` does not exist here — if you copy a snippet
-  from shadcn docs written for Radix, it will not typecheck.
-- `eslint.config.js` disables `react-refresh/only-export-components` for `src/components/ui/**`, since
-  generated shadcn components export their cva variants alongside the component.
-- `Dialog.tsx` is a hand-rolled wrapper around the native `<dialog>` element (imperative
-  `showModal()`/`close()` in an effect), *not* the shadcn dialog. `Log` and `Dictionary` both build on it.
-- Alias `@` → `src`, declared in both `vite.config.ts` and `tsconfig.app.json`. The root-level
-  `lib/utils.ts` is a stray duplicate left by `shadcn init`; the live one is `src/lib/utils.ts`.
-- Character/background art is imported from `src/images/` (bundled by Vite), not from `public/`.
+- **Tailwind v4**, CSS-first: no `tailwind.config`. The whole design system is the `@theme` block
+  at the top of `src/index.css`.
+- **No component library.** shadcn/base-ui was removed once the custom design landed — a generic
+  Button earned nothing against a bespoke visual identity. Controls are plain `<button>`/`<Link>`
+  elements taking class strings from `src/components/styles.ts` (`buttonStyles`, `inputStyles`,
+  `labelStyles`). That file is the single place to restyle controls. Icons are `lucide-react`.
+- `Dialog.tsx` wraps the native `<dialog>` element (imperative `showModal()`/`close()`), and takes a
+  required `title`. `Dictionary` and `Log` both build on it.
+- Alias `@` → `src`, in both `vite.config.ts` and `tsconfig.app.json`.
+- Character art is imported from `src/images/` (bundled by Vite). Both character sprites are palette
+  PNGs carrying transparency via a `tRNS` chunk; `background.png` is opaque.
 
-### Design tokens
+### Design language
 
-App colours are semantic tokens, not raw Tailwind palette classes. Values live in the
-`/* App tokens */` section of `:root` in `src/index.css` and are exposed as utilities through
-`@theme inline` — so `--speaker-luis` becomes `bg-speaker-luis`. Groups: `speaker-*` (dialogue bubbles,
-keyed by `Content.author`), `braille-*` (dot and cell colours), `feedback-*` (exercise grading),
-`surface-*` (card and dialog chrome), `link*`.
+Two registers, taken from the story itself:
 
-Restyle by editing the values in `:root`; don't reintroduce raw `bg-violet-700`-style classes in app
-components. Note that `--braille-cell-border` only colours the cell's top and bottom edges — the left
-and right fall back to the global `* { border-border }` in the base layer.
+- **The seen world** — the illustrated stage: lantern light, warm colour, soft focus.
+- **The felt world** — everything braille: parchment and ink in real relief.
+
+Relief (`.braille-cell`, `.braille-dot-raised`, `.braille-dot-empty`) is reserved for braille, which
+genuinely is embossed. **Never apply it to buttons or inputs** — those stay flat and high-contrast so
+the tactile conceit costs nobody usability.
+
+Colours are sampled from the project's own artwork, not invented: honey lantern light, Braillinda's
+sage dress, the teal dusk window, with poppy red carried over from the amapolas of the source book.
+Poppy means *action* and appears nowhere decorative. Narrador deliberately gets no speaker chip —
+narration is a different register, not a character with a name tag.
+
+**Every colour pair used for text clears WCAG AA at normal size**, and the empty-dot ring clears 3:1
+against parchment. Ratios are noted inline in `index.css`. This app is about blind readers and is
+published in respect of the ONCE — verify contrast when changing a colour, do not eyeball it.
+
+Type is **Fraunces** for display (variable, run with `SOFT`/`WONK` so it reads storybook rather than
+editorial) and **Atkinson Hyperlegible** for body text — drawn by the Braille Institute for low-vision
+readers. Both self-hosted via fontsource, imported in `main.tsx`. Do not swap the body face for a
+generic sans; the choice is functional.
+
+Motion is one orchestrated moment: dots emboss into the page when a cell appears. The stagger is
+**capped** so a long phrase never takes more than ~350ms to finish arriving. `prefers-reduced-motion`
+is honoured globally.
+
+### Braille data
+
+`alphabet.ts` holds the full Spanish alphabet; `dictionary.ts` derives the letters taught so far from
+it, so dot patterns have one source of truth. `BrailleCharacter` defaults to the taught set, so the
+story cannot silently show a sign the reader has not met — pass `map={brailleAlphabet}` only for
+decorative braille the reader is not expected to decode (the home page title does this).
 
 ## Known gaps in content rendering
 
 Relevant to the design / data-model work being planned:
 
-- `Log.tsx` (history dialog) passes raw `message` strings straight to `Message` instead of going through
-  `Messages`, so `<BRAILLE>` and `<br>` markup appears as literal text in the history.
 - `Dictionary.tsx` always shows every entry in `dictionary.ts` regardless of the reader's page — it is
   not scoped to what has actually been taught up to `?page=N`.
 - The transcription stops mid-story, at Braillinda asking about accented vowels; the rest is still in the PDF.
