@@ -39,6 +39,29 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ── App tokens ─────────────────────────────────────────────────────
+     Values live in :root below — tweak them there, not here. */
+  --color-speaker-luis: var(--speaker-luis);
+  --color-speaker-luis-fg: var(--speaker-luis-fg);
+  --color-speaker-braillinda: var(--speaker-braillinda);
+  --color-speaker-braillinda-fg: var(--speaker-braillinda-fg);
+  --color-speaker-turno: var(--speaker-turno);
+  --color-speaker-turno-fg: var(--speaker-turno-fg);
+  --color-speaker-default: var(--speaker-default);
+  --color-speaker-default-fg: var(--speaker-default-fg);
+
+  --color-braille-dot: var(--braille-dot);
+  --color-braille-cell-border: var(--braille-cell-border);
+
+  --color-feedback-correct: var(--feedback-correct);
+  --color-feedback-error: var(--feedback-error);
+
+  --color-surface-card: var(--surface-card);
+  --color-surface-border: var(--surface-border);
+
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
 }
 
 :root {
@@ -74,6 +97,38 @@
   --sidebar-accent-foreground: oklch(0.49 0.27 292.65);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── App tokens ─────────────────────────────────────────────────────
+     Every value below is the exact Tailwind colour the components used
+     before they were tokenised (noted in the comments), so the current
+     look is unchanged. Restyle the novel by editing these. */
+
+  /* Dialogue bubble headers, keyed by Content.author. Narrador and
+     Abuela both fall through to `default` in Message.tsx. */
+  --speaker-luis: oklch(49.1% 0.27 292.581);          /* violet-700 */
+  --speaker-luis-fg: #fff;
+  --speaker-braillinda: oklch(52.5% 0.223 3.958);     /* pink-700   */
+  --speaker-braillinda-fg: #fff;
+  --speaker-turno: oklch(52.7% 0.154 150.069);        /* green-700  */
+  --speaker-turno-fg: #fff;
+  --speaker-default: oklch(92.8% 0.006 264.531);      /* gray-200   */
+  --speaker-default-fg: #000;
+
+  /* Braille cell: raised dots and the cell outline. */
+  --braille-dot: #000;
+  --braille-cell-border: oklch(70.8% 0 none);         /* neutral-400 */
+
+  /* Exercise grading in Form.tsx. */
+  --feedback-correct: oklch(52.7% 0.154 150.069);     /* green-700  */
+  --feedback-error: oklch(63.7% 0.237 25.331);        /* red-500    */
+
+  /* Message card and dialog chrome. */
+  --surface-card: #fff;
+  --surface-border: oklch(87.2% 0.01 258.338);        /* gray-300   */
+
+  /* Inline prose links (a.link). */
+  --link: oklch(49.1% 0.27 292.581);                  /* violet-700 */
+  --link-hover: oklch(60.6% 0.25 292.717);            /* violet-500 */
 }
 
 .dark {
@@ -120,7 +175,7 @@
 }
 
 a.link {
-  @apply text-violet-700 font-semibold underline hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700;
+  @apply text-link font-semibold underline hover:text-link-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link;
 }
 
 .flip-image {

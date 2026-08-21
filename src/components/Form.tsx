@@ -28,7 +28,7 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
       <input type="hidden" name="page" value={pageNumber} />
       {fetcher.data?.success && (
         <div>
-          <div className="text-green-700 mb-2">Correcto!</div>
+          <div className="text-feedback-correct mb-2">Correcto!</div>
           <Button variant="outline" render={(
             <Link to={{
               search: `?page=${pageNumber + 1}`,
@@ -37,7 +37,7 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
         </div>
       )}
       {fetcher.data?.success === false && (
-        <div className="text-red-500 mb-2">Incorrecto! prueba otra vez</div>
+        <div className="text-feedback-error mb-2">Incorrecto! prueba otra vez</div>
       )}
       {!fetcher.data?.success && (
         <div className="flex gap-2">
