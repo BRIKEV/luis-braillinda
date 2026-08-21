@@ -5,9 +5,11 @@ import Messages from "../../components/Messages";
 import ExerciseForm from "../../components/Form";
 import Log from "../../components/Log";
 import Dictionary from "../../components/Dictionary";
-import { Button } from "../../components/ui/button";
+import { buttonStyles } from "../../components/styles";
 import type { loader } from "./loader";
 
+/* NOTE: still the pre-redesign layout, ported onto the new design tokens so it
+   keeps working. The visual-novel staging lands in the next pass. */
 export default function Story() {
   const { page, content, fullContent } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,55 +24,51 @@ export default function Story() {
   };
 
   return (
-    <div className="max-w-full m-auto p-4 md:max-w-screen-lg">
-      <h2 className="text-xl font-bold mb-4">Historia</h2>
-      <nav className="mb-6">
-        <ul className="list-none flex gap-2">
-          <li>
-            <Button variant="outline" render={(
-              <Link to={{
-                search: `?page=${page}&dictionary=open`,
-              }}>
-                Diccionario
-                <BookA />
-              </Link>
-            )}>
-              </Button>
-          </li>
-          <li>
-            <Button variant="outline" render={(
-              <Link to={{
-                search: `?page=${page}&log=open`,
-              }}>
-                Historico
-                <History />
-              </Link>
-            )}>
-              </Button>
-          </li>
-        </ul>
+    <main className="mx-auto max-w-3xl px-4 py-6 md:px-6 md:py-10">
+      <nav className="mb-6 flex flex-wrap items-center gap-3">
+        <Link to="/" className={buttonStyles("ghost")}>
+          Inicio
+        </Link>
+        <span aria-hidden="true" className="dot-rule text-parchment min-w-8 flex-1" />
+        <Link to={{ search: `?page=${page}&dictionary=open` }} className={buttonStyles("outline")}>
+          <BookA />
+          Diccionario
+        </Link>
+        <Link to={{ search: `?page=${page}&log=open` }} className={buttonStyles("outline")}>
+          <History />
+          Histórico
+        </Link>
       </nav>
+
       <Avatars author={content.author} />
+
       <Messages message={content.message} author={content.author}>
         {content.exercise ? (
           <ExerciseForm pageNumber={page} />
-        ): (
-          <div className="flex gap-2">
-            <Button variant="ghost" render={(
-              <Link to={{ search: `?page=${page - 1}` }} preventScrollReset>Volver</Link>
-            )}>
-            </Button>
-            <Button variant="outline" render={(
-              <Link to={{ search: `?page=${page + 1}` }} preventScrollReset>Continuar</Link>
-            )}>
-            </Button>
+        ) : (
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to={{ search: `?page=${page + 1}` }}
+              preventScrollReset
+              className={buttonStyles("primary")}
+            >
+              Continuar
+            </Link>
+            {page > 1 && (
+              <Link
+                to={{ search: `?page=${page - 1}` }}
+                preventScrollReset
+                className={buttonStyles("onPaper")}
+              >
+                Volver
+              </Link>
+            )}
           </div>
         )}
       </Messages>
-      {!!log && (
-        <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />
-      )}
+
+      {!!log && <Log isOpen={!!log} onClose={handleClose('log')} content={fullContent} />}
       <Dictionary isOpen={!!dictionary} onClose={handleClose('dictionary')} />
-    </div>
+    </main>
   );
 }

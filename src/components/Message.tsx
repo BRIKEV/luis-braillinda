@@ -6,30 +6,39 @@ interface MessageProps {
   parts: (string | ReactNode)[];
 }
 
-const getAuthorStyles = (author: string) => {
-  switch (author) {
-    case 'Luis':
-      return 'bg-speaker-luis text-speaker-luis-fg text-left';
-    case 'Braillinda':
-      return 'bg-speaker-braillinda text-speaker-braillinda-fg text-right';
-    case 'Tu turno':
-      return 'bg-speaker-turno text-speaker-turno-fg text-left';
+/* Narration has no chip: it is a different register, not a character with a
+   name tag. Everyone else is coloured from their own artwork. */
+const chipStyles = (author: string) => {
+  switch (author.toLowerCase()) {
+    case 'luis':
+      return 'bg-speaker-luis text-ink';
+    case 'braillinda':
+      return 'bg-speaker-braillinda text-ink';
+    case 'abuela':
+      return 'bg-speaker-abuela text-ink';
+    case 'tu turno':
+      return 'bg-speaker-turno text-parchment';
     default:
-      return 'bg-speaker-default text-speaker-default-fg text-left';
+      return null;
   }
-}
+};
 
 const Message: React.FC<MessageProps> = ({ author, parts, children }) => {
-  const authorStyles = getAuthorStyles(author);
+  const chip = chipStyles(author);
+
   return (
-    <div>
-      <div className="bg-surface-card rounded-md shadow-lg border border-surface-border mb-2">
-        <h3 className={`text-lg font-bold rounded-tl-md rounded-tr-md px-5 py-2 ${authorStyles}`}>{author}</h3>
-        <div className="p-5">
-          <p className="mb-2">{parts}</p>
-          {children}
-        </div>
-      </div>
+    <div className="paper rounded-card shadow-paper relative mb-3 p-5 sm:p-6">
+      {chip ? (
+        <h3
+          className={`${chip} mb-3 inline-block rounded-full px-3.5 py-1 font-sans text-sm font-bold`}
+        >
+          {author}
+        </h3>
+      ) : (
+        <h3 className="sr-only">{author}</h3>
+      )}
+      <p className={chip ? 'text-lg' : 'text-lg italic'}>{parts}</p>
+      {children ? <div className="mt-5">{children}</div> : null}
     </div>
   );
 };

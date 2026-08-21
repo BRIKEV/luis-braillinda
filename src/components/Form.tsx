@@ -1,10 +1,9 @@
 import { Link, useFetcher } from "react-router";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+import { buttonStyles, inputStyles, labelStyles } from "./styles";
 
 const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
   const fetcher = useFetcher<{ success: boolean }>();
+
   return (
     <fetcher.Form
       method="post"
@@ -12,52 +11,57 @@ const ExerciseForm = ({ pageNumber }: { pageNumber: number }) => {
         fetcher.submit(event.currentTarget);
       }}
     >
-      <div className="mb-2">
-        <Label
-          className="mb-2"
-          htmlFor="solution"
-        >
-          Solución:
-        </Label>
-        <Input
+      <div className="mb-4">
+        <label className={labelStyles} htmlFor="solution">
+          ¿Qué pone aquí?
+        </label>
+        <input
           type="text"
           id="solution"
           name="solution"
+          autoComplete="off"
+          className={`${inputStyles} mt-2`}
         />
       </div>
       <input type="hidden" name="page" value={pageNumber} />
+
       {fetcher.data?.success && (
         <div>
-          <div className="text-feedback-correct mb-2">Correcto!</div>
-          <Button variant="outline" render={(
-            <Link to={{
-              search: `?page=${pageNumber + 1}`,
-            }} preventScrollReset>Continuar</Link>
-          )} />
+          <p className="text-correct mb-4 font-bold">¡Correcto!</p>
+          <Link
+            className={buttonStyles("primary")}
+            to={{ search: `?page=${pageNumber + 1}` }}
+            preventScrollReset
+          >
+            Continuar
+          </Link>
         </div>
       )}
+
       {fetcher.data?.success === false && (
-        <div className="text-feedback-error mb-2">Incorrecto! prueba otra vez</div>
+        <p className="text-error mb-4 font-bold">No es esa. Vuelve a intentarlo.</p>
       )}
+
       {!fetcher.data?.success && (
-        <div className="flex gap-2">
-          <Button variant="ghost" render={(
-            <Link to={{
-              search: `?page=${pageNumber - 1}`,
-            }} preventScrollReset>Volver</Link>
-          )} />
-          <Button
+        <div className="flex flex-wrap gap-3">
+          <button
             type="submit"
             disabled={fetcher.state === "loading"}
-            hidden={fetcher.data?.success}
-            variant="outline"
+            className={buttonStyles("primary")}
           >
             Comprobar palabra
-          </Button>
+          </button>
+          <Link
+            className={buttonStyles("onPaper")}
+            to={{ search: `?page=${pageNumber - 1}` }}
+            preventScrollReset
+          >
+            Volver
+          </Link>
         </div>
       )}
     </fetcher.Form>
   );
-}
+};
 
 export default ExerciseForm;

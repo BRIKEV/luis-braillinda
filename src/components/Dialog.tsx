@@ -1,12 +1,14 @@
 import { type ReactNode, useEffect, useRef } from "react";
+import { X } from "lucide-react";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  title: string;
   children: ReactNode[] | ReactNode;
 }
 
-export const Dialog = ({ isOpen, onClose, children }: Props) => {
+export const Dialog = ({ isOpen, onClose, title, children }: Props) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -27,26 +29,25 @@ export const Dialog = ({ isOpen, onClose, children }: Props) => {
   return (
     <dialog
       ref={dialogRef}
-      className="border border-surface-border p-4 pt-6 rounded-lg shadow-lg max-w-2xl m-auto"
       onClose={handleClose}
+      aria-label={title}
+      className="paper rounded-card shadow-lifted m-auto w-[min(38rem,calc(100vw-2rem))]
+                 max-h-[85dvh] overflow-y-auto p-0 backdrop:bg-dusk-deep/70
+                 backdrop:backdrop-blur-sm"
     >
-      <button onClick={handleClose} className="absolute top-2 right-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div className="paper sticky top-0 flex items-center justify-between gap-4 border-b border-ink/12 px-5 py-4">
+        <h2 className="text-2xl">{title}</h2>
+        <button
+          type="button"
+          onClick={handleClose}
+          aria-label="Cerrar"
+          className="grid size-11 shrink-0 place-items-center rounded-full text-ink/70
+                     hover:bg-ink/8 hover:text-ink"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+          <X className="size-5" />
         </button>
-      {children}
+      </div>
+      <div className="px-5 pt-4 pb-6">{children}</div>
     </dialog>
   );
-}
+};

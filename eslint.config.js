@@ -19,12 +19,4 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
-  {
-    // Generated shadcn components export their cva variants next to the component,
-    // which Fast Refresh flags. Regenerating with `shadcn add` would undo any edit here.
-    files: ['src/components/ui/**/*.{ts,tsx}'],
-    rules: {
-      'react-refresh/only-export-components': 'off',
-    },
-  },
 ])

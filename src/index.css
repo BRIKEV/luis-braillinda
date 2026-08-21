@@ -1,184 +1,181 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* ═══════════════════════════════════════════════════════════════════════
+   Luis y Braillinda — design tokens
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+   Two visual registers, after the story itself:
 
-  /* ── App tokens ─────────────────────────────────────────────────────
-     Values live in :root below — tweak them there, not here. */
-  --color-speaker-luis: var(--speaker-luis);
-  --color-speaker-luis-fg: var(--speaker-luis-fg);
-  --color-speaker-braillinda: var(--speaker-braillinda);
-  --color-speaker-braillinda-fg: var(--speaker-braillinda-fg);
-  --color-speaker-turno: var(--speaker-turno);
-  --color-speaker-turno-fg: var(--speaker-turno-fg);
-  --color-speaker-default: var(--speaker-default);
-  --color-speaker-default-fg: var(--speaker-default-fg);
+   THE SEEN WORLD  the illustrated stage. Lantern light, warm colour, soft
+                   focus. What the reader has and the characters do not.
+   THE FELT WORLD  everything braille. Parchment and ink, rendered in real
+                   relief — raised dots, debossed empty positions.
 
-  --color-braille-dot: var(--braille-dot);
-  --color-braille-cell-border: var(--braille-cell-border);
+   Colours are sampled from the project's own artwork (honey lantern light,
+   Braillinda's sage dress, the teal dusk window) with poppy red carried over
+   from the amapolas of the source book. Every pair used for text clears
+   WCAG AA at normal size; ratios noted below.
+   ═══════════════════════════════════════════════════════════════════════ */
 
-  --color-feedback-correct: var(--feedback-correct);
-  --color-feedback-error: var(--feedback-error);
+@theme {
+  /* Display: Fraunces, run soft and wonky so it reads storybook rather than
+     editorial. Body: Atkinson Hyperlegible, drawn by the Braille Institute
+     for low-vision readers — the right call for this subject. */
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
 
-  --color-surface-card: var(--surface-card);
-  --color-surface-border: var(--surface-border);
+  /* Ground and ink */
+  --color-dusk: #2e4a4c;           /* the window at dusk — the page ground  */
+  --color-dusk-deep: #1b2e2f;      /* vignette, recessed areas              */
+  --color-ink: #2a1f16;            /* warm near-black: text and raised dots */
+  --color-parchment: #f6ebd7;      /* paper — cards, panels                 */
+  --color-parchment-deep: #e3d3b4; /* the shaded edge of paper              */
+  --color-muted: #c4b79a;          /* secondary text on dusk       4.81:1   */
 
-  --color-link: var(--link);
-  --color-link-hover: var(--link-hover);
-}
+  /* Characters, taken from their own artwork */
+  --color-honey: #f0b457;          /* lantern light, Luis          5.17:1   */
+  --color-sage: #93ac77;           /* Braillinda's dress                    */
+  --color-violet: #9385b6;         /* Abuela — from the 2002 cover          */
+  --color-poppy: #c0392b;          /* the amapolas — action only   4.61:1   */
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.49 0.27 292.65);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.49 0.27 292.65);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.49 0.27 292.65);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.49 0.27 292.65);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.49 0.27 292.65);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Speaker chips. Narrador deliberately has none: narration is a different
+     register, not a character with a name tag. */
+  --color-speaker-luis: var(--color-honey);
+  --color-speaker-braillinda: var(--color-sage);
+  --color-speaker-abuela: var(--color-violet);
+  --color-speaker-turno: var(--color-poppy);
 
-  /* ── App tokens ─────────────────────────────────────────────────────
-     Every value below is the exact Tailwind colour the components used
-     before they were tokenised (noted in the comments), so the current
-     look is unchanged. Restyle the novel by editing these. */
+  /* Feedback */
+  --color-correct: #4f7a4a;
+  --color-error: var(--color-poppy);
 
-  /* Dialogue bubble headers, keyed by Content.author. Narrador and
-     Abuela both fall through to `default` in Message.tsx. */
-  --speaker-luis: oklch(49.1% 0.27 292.581);          /* violet-700 */
-  --speaker-luis-fg: #fff;
-  --speaker-braillinda: oklch(52.5% 0.223 3.958);     /* pink-700   */
-  --speaker-braillinda-fg: #fff;
-  --speaker-turno: oklch(52.7% 0.154 150.069);        /* green-700  */
-  --speaker-turno-fg: #fff;
-  --speaker-default: oklch(92.8% 0.006 264.531);      /* gray-200   */
-  --speaker-default-fg: #000;
+  --radius-card: 0.75rem;
+  --radius-cell: 0.3rem;
 
-  /* Braille cell: raised dots and the cell outline. */
-  --braille-dot: #000;
-  --braille-cell-border: oklch(70.8% 0 none);         /* neutral-400 */
-
-  /* Exercise grading in Form.tsx. */
-  --feedback-correct: oklch(52.7% 0.154 150.069);     /* green-700  */
-  --feedback-error: oklch(63.7% 0.237 25.331);        /* red-500    */
-
-  /* Message card and dialog chrome. */
-  --surface-card: #fff;
-  --surface-border: oklch(87.2% 0.01 258.338);        /* gray-300   */
-
-  /* Inline prose links (a.link). */
-  --link: oklch(49.1% 0.27 292.581);                  /* violet-700 */
-  --link-hover: oklch(60.6% 0.25 292.717);            /* violet-500 */
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.49 0.27 292.65);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.49 0.27 292.65);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.49 0.27 292.65);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.49 0.27 292.65);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --shadow-paper: 0 1px 2px rgb(20 14 8 / 0.18), 0 8px 24px -8px rgb(20 14 8 / 0.45);
+  --shadow-lifted: 0 2px 4px rgb(20 14 8 / 0.2), 0 18px 40px -12px rgb(20 14 8 / 0.55);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html {
+    -webkit-text-size-adjust: 100%;
   }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-dusk);
+    color: var(--color-parchment);
+    font-family: var(--font-sans);
+    line-height: 1.65;
   }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 108;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  /* Never remove the focus ring — this app is about readers who depend on it. */
+  :focus-visible {
+    outline: 3px solid var(--color-honey);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-honey);
+    color: var(--color-ink);
+  }
+}
+
+/* ── The felt world ──────────────────────────────────────────────────────
+   Relief is reserved for braille, which is genuinely embossed, and is never
+   applied to buttons or inputs — those stay flat and high-contrast so the
+   tactile conceit never costs anyone usability. */
+
+.paper {
+  background-color: var(--color-parchment);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"),
+    linear-gradient(176deg, #fbf3e4 0%, var(--color-parchment) 45%, #efe1c6 100%);
+  color: var(--color-ink);
+}
+
+/* One braille cell: a small card of paper carrying up to six dots. */
+.braille-cell {
+  background-image: linear-gradient(168deg, #fbf3e4 0%, var(--color-parchment) 60%, #eee0c4 100%);
+  border: 1px solid var(--color-parchment-deep);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    0 1px 2px rgb(20 14 8 / 0.22);
+}
+
+/* A raised dot. Light falls from the top-left, as it does on the stage. */
+.braille-dot-raised {
+  background-image: radial-gradient(circle at 34% 30%, #55432f 0%, #35281b 42%, #2a1f16 100%);
+  box-shadow:
+    0 1.5px 2px rgb(20 14 8 / 0.4),
+    inset 0 1px 0.5px rgb(255 255 255 / 0.22);
+}
+
+/* An empty position, drawn as an open circle pressed into the paper — the way
+   the book itself draws an unraised dot (page 5 of the PDF). The reader needs
+   to see which of the six positions are *not* raised, so the ring clears 3:1
+   against parchment (#94815f = 3.2:1) rather than being a hint. */
+.braille-dot-empty {
+  background-color: rgb(42 31 22 / 0.04);
+  box-shadow:
+    inset 0 0 0 1px #94815f,
+    inset 0 1px 1.5px rgb(42 31 22 / 0.12),
+    0 0.5px 0 rgb(255 255 255 / 0.55);
+}
+
+/* The dot border from the book's own title page (page 2 of the PDF). */
+.dot-rule {
+  height: 14px;
+  background-image: radial-gradient(circle, currentColor 1.25px, transparent 1.35px);
+  background-size: 9px 7px;
+  opacity: 0.4;
 }
 
 a.link {
-  @apply text-link font-semibold underline hover:text-link-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link;
+  color: var(--color-honey);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 }
 
+a.link:hover {
+  color: var(--color-parchment);
+}
+
+/* Braillinda's artwork faces right; she is staged on the right facing in. */
 .flip-image {
-  -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────────
+   One orchestrated moment: dots rise into relief when a cell appears, as if
+   being embossed into the page. Everything else stays still. */
+@keyframes emboss-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-emboss {
+  animation: emboss-in 340ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

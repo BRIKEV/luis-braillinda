@@ -8,17 +8,21 @@ interface Props {
 }
 
 export default function Dictionary({ isOpen, onClose }: Props) {
+  const letters = Object.keys(dictionary);
+
   return (
-    <Dialog isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl font-bold mb-4">Diccionario</h2>
-      <div className="grid grid-cols-6 gap-4">
-        {Object.keys(dictionary).map((key) => (
-          <div key={key}>
-            <p>{key}</p>
-            <BrailleCharacter character={key} />
-          </div>
+    <Dialog isOpen={isOpen} onClose={onClose} title="Diccionario">
+      <p className="mb-5 text-ink/70">
+        Los {letters.length} signos que Luis y Braillinda han inventado hasta ahora.
+      </p>
+      <ul className="grid grid-cols-4 gap-4 sm:grid-cols-6">
+        {letters.map((letter) => (
+          <li key={letter} className="flex flex-col items-center gap-2">
+            <BrailleCharacter character={letter} size="lg" />
+            <span className="font-display text-xl font-semibold text-ink">{letter}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     </Dialog>
   );
 }

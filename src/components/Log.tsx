@@ -1,4 +1,4 @@
-import Message from "@/components/Message";
+import Messages from "./Messages";
 import { Dialog } from "./Dialog";
 
 interface Props {
@@ -12,11 +12,12 @@ interface Props {
 
 export default function Log({ content, isOpen, onClose }: Props) {
   return (
-    <Dialog isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl font-bold mb-4">Historia</h2>
-      {content.map((line, index) => (
-        <Message key={index} author={line.author} parts={[line.message]} />
-      ))}
+    <Dialog isOpen={isOpen} onClose={onClose} title="Lo que va de historia">
+      <div className="space-y-1">
+        {content.map((line, index) => (
+          <Messages key={index} author={line.author} message={line.message} />
+        ))}
+      </div>
     </Dialog>
   );
 }
