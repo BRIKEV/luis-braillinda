@@ -1,24 +1,30 @@
 # Paste-ready prompts
 
-`style.md` and the other briefs are reference documents — do not paste their
-markdown into a prompt box. Headers, tables and bullet lists are noise to an
-image model. These are the same content flattened into prose, ready to paste.
+Reference docs (`style.md`, `backgrounds.md`, `characters.md`) are the thinking.
+This file is what you actually paste. Do not paste markdown into a prompt box.
 
-## Which tool for what
+**The style anchor is `src/images/bg-workshop.jpg`.** Everything matches that.
 
-| | Tool | Why |
-|---|---|---|
-| Backgrounds | **Firefly Image 4** | 16:9 preset built in, strong at landscapes, licensed training data |
-| Characters | **Gemini (Nano Banana)** | Keeps a face consistent across expressions by editing your existing sprite. Firefly's reference transfers style, not identity. |
+## What we learned
 
-## Firefly settings for backgrounds
+- **Do not say "coloured pencil" or "visible paper grain".** That language made
+  Paris come out as a crayon colouring-book. The workshop is smooth painterly
+  gouache with no visible outlines.
+- **"like an animated film background"** is the single most effective phrase.
+- **Firefly prompts max out at 1024 characters.** Both below are under.
+- **Magenta background for characters, not white.** Her hair is silver-white and
+  skin is pale — a white key eats into both. Magenta appears nowhere on either
+  character.
+- **No glow, no sparkles in the art.** Those go in CSS so they adapt to each
+  background and can brighten on whoever is speaking.
 
-- **Proporción:** 16:9
-- **Tema / style presets:** off. They fight the prose and push toward gloss.
-- **Excluir de la imagen** (under **Más**) — this is a *separate field from the
-  prompt box*. Never paste these words into the prompt itself: a model reads a
-  positive prompt as a list of things to draw, so putting them there asks Firefly
-  for text, people, neon and a watermark. Same list for all three:
+## Backgrounds — Firefly
+
+Settings: **16:9**, **Tema off**, upload `bg-workshop.jpg` in **Cargar imagen**.
+
+Exclusions go under **Más** → *Excluir de la imagen*, a separate field from the
+prompt. Never paste them into the prompt itself — a positive prompt is a list of
+things to draw. If your Firefly build has no such field, skip them.
 
 ```
 text, letters, numbers, braille, watermark, signature, people, person,
@@ -26,122 +32,81 @@ characters, figures, fairy, photorealism, 3D render, CGI, anime, thick black
 outlines, neon, oversaturated, harsh shadows, lens flare, glossy, plastic
 ```
 
-Excluding people matters: these are empty stages, and the model will happily
-populate a meadow with a wandering child otherwise — and then there is nowhere
-to stand Braillinda.
+### Meadow — 729 chars
 
-Adobe has moved this field between Firefly versions and some builds no longer
-have it. If you cannot find it, **skip the list rather than relocating it into
-the prompt**. The prose already says the stage is open and empty; if figures
-still appear, append the short phrase `no people, no characters` to the end of
-the prompt, which reads as an instruction rather than a shopping list.
+```
+Soft painterly storybook illustration, watercolour and gouache, smooth blended shading with no visible outlines, muted and low contrast, cosy and dreamlike, like an animated film background. An autumn meadow in late afternoon: tall red poppies on slender stems with dark round seed capsules, a few red and white spotted mushrooms, a gnarled tree with a hollow at the left edge, sage green leaves and dry golden grasses, distant misty teal trees. Warm honey sunlight with cool teal shadows, a soft dusty violet and pale teal sky, tiny golden motes drifting in the air. The middle ground is open and empty and the lower third is simple and uncluttered. Peaceful and quietly magical. An empty landscape with no people or characters.
+```
 
-## Order
+### Paris — 766 chars
 
-Generate the **meadow** first and iterate until the style is right. Then upload
-that approved image as a style reference for the other two so all three match.
+```
+Soft painterly storybook illustration, watercolour and gouache, smooth blended shading with no visible outlines, muted and low contrast, cosy and dreamlike, like an animated film background. A quiet cobbled Paris street at blue hour on an autumn evening, early nineteenth century: a tall pale cream stone building on the left with a heavy wooden door and rows of tall windows, two of them glowing soft warm amber, a wrought iron lantern with a gentle honey halo, a bare delicate tree on the right, a soft dusty violet and pale teal sky with the last light still in it, muted grey blue cobbles, tiny golden motes in the air. The street is open and empty and the lower third is simple and uncluttered. Quiet and expectant. An empty street with no people or characters.
+```
+
+### Workshop — done
+
+`src/images/bg-workshop.jpg`. Do not regenerate; it is the anchor.
 
 ---
 
-## 1. Meadow
+## Characters — Gemini
+
+One thread per character. Upload the old sprite on turn 1, then iterate in the
+same thread with no re-upload so the face stays consistent.
+
+Staging: **Braillinda is on the right and faces LEFT. Luis is on the left and
+faces RIGHT.** They look at each other. She floats (she is a fairy, so no floor
+contact needed); he stands.
+
+### Braillinda — turn 1, attach `src/images/braillinda.png`
 
 ```
-Soft children's storybook illustration in coloured pencil and light watercolour,
-warm and gentle, visible paper grain, delicate soft outlines rather than heavy
-ink, muted saturation, matte finish. An autumn meadow at golden hour seen from
-low down among the flowers: tall red poppies with dark round seed capsules
-catching the light, large red and white spotted mushrooms with soft rounded
-caps, a gnarled tree trunk with a small hollow at the left edge, dry golden
-grasses, drifting dandelion seeds and tiny glowing motes in the air. Warm low
-sunlight from the right, long soft shadows, a hazy pale gold and dusty violet
-sky. The middle ground is open and empty. Peaceful, nostalgic, quietly magical.
+This is a character from a children's story. Redraw her full body, head to feet, floating slightly above the ground, three-quarter view facing LEFT so both eyes are visible. Nothing else in the image: no furniture, no props, no scenery, no glow, no sparkles. Plain flat magenta background filling the whole image.
+
+Keep her recognisable: long silver-blonde hair, pointed ears, large golden butterfly wings veined like a leaf, a simple sage-green dress covered all over in small raised dots like braille pressed into the cloth, barefoot, a slender wand with a small gold star.
+
+Soft painterly storybook style, watercolour and gouache, smooth blended shading, warm muted colour, directional light from the left, like an animated film background.
+
+Expression: head tilted, alert and curious, one hand reaching out with fingertips extended as if feeling something.
 ```
 
-## 2. Paris street
+### Luis — turn 1, attach `src/images/luis.png`
 
 ```
-Soft children's storybook illustration in coloured pencil and light watercolour,
-warm and gentle, visible paper grain, delicate soft outlines rather than heavy
-ink, muted saturation, matte finish. A narrow cobbled Paris street on a cold
-autumn night in the early nineteenth century: a tall pale stone building with a
-heavy wooden door and rows of tall windows, three of them glowing warm amber
-from within, a single wrought iron street lantern casting a pool of honey light
-on wet cobbles, bare branches against a deep teal and violet sky with a scatter
-of stars and a little mist. The foreground is open and empty. Quiet, hushed,
-expectant.
+This is a character from a children's story. Redraw him full body, head to feet, standing, three-quarter view facing RIGHT so both eyes are visible. Remove the desk, the book and all furniture — just the man alone. Nothing else in the image: no props, no scenery, no glow. Plain flat magenta background filling the whole image.
+
+Keep him recognisable: elderly teacher, short white beard, swept-back white hair, small round dark glasses, soft ochre-yellow shirt with a buttoned collar, warm brown quilted waistcoat.
+
+Soft painterly storybook style, watercolour and gouache, smooth blended shading, warm muted colour, directional light from the left, like an animated film background.
+
+Expression: one hand raised mid-gesture, open palm, mouth slightly open, explaining something patiently.
 ```
 
-## 3. Workshop
+### Follow-up turns — same thread, no re-upload
+
+Only the last line changes. Always prefix:
+
+> Same character, same full-body framing, same style, same magenta background. Now:
+
+| File | Line to use |
+|---|---|
+| `braillinda-delighted` | a bright open smile, both hands raised, wings spread wide. She is delighted. |
+| `braillinda-cross` | arms folded, brow furrowed, pouting, wings tense. She is cross. |
+| `braillinda-wistful` | head slightly lowered, a gentle sad smile, one hand touching a wing. She is wistful. |
+| `luis-pleased` | a warm broad smile, both hands open, head tilted back a little. He is pleased. |
+| `luis-asleep` | seated, head tipped forward, peaceful, hands loose in his lap. He is asleep. |
+
+## Filenames
+
+Two expressions each is enough for the POC.
 
 ```
-Soft children's storybook illustration in coloured pencil and light watercolour,
-warm and gentle, visible paper grain, delicate soft outlines rather than heavy
-ink, muted saturation, matte finish. The interior of an old stone institute
-workroom at dusk: vaulted arched ceilings in warm pale stone, tall bookshelves
-crammed with worn books, a large dark green chalkboard on the back wall which is
-completely blank and empty, sturdy wooden work tables and stools, a tall arched
-window on the right looking out on a misty teal twilight garden. Hanging brass
-lanterns and a candle giving warm amber light, tiny golden motes drifting in the
-air, one open book on a table glowing gently from its pages. The centre
-foreground is open and empty. Cosy, scholarly, quietly magical.
+src/images/braillinda-curious.jpg     src/images/luis-explaining.jpg
+src/images/braillinda-delighted.jpg   src/images/luis-pleased.jpg
 ```
-
-Keep the chalkboard blank. The app renders real braille; decorative dots that do
-not spell anything are a small lie in a story that teaches the code.
-
----
-
-## Characters, in Gemini
-
-Conversational rather than one-shot. Upload the existing sprite, then iterate in
-the same thread so the face carries across.
-
-**Turn 1** — attach `src/images/braillinda.png`:
-
-```
-This is a character from a children's story I am illustrating. Redraw her as a
-full-body figure on a plain flat white background, three-quarter view, facing
-to the left, with nothing else in the image: no furniture, no props, no scenery,
-no border or outline around her.
-
-Keep her exactly recognisable: long silver-blonde hair, pointed ears, large
-translucent golden butterfly wings veined like a leaf, a simple sage-green dress
-whose fabric is covered all over in small raised dots like braille pressed into
-the cloth, barefoot, a slender wand with a small gold star, a soft golden glow
-with a few drifting sparkles.
-
-Soft children's storybook style in coloured pencil and light watercolour, warm
-and gentle, visible paper grain, delicate outlines, muted colour, matte.
-
-Her expression: head slightly lowered, a gentle sad smile, one hand touching a
-wing. She is wistful.
-```
-
-**Turns 2–4** — same thread, no re-upload:
-
-```
-Same character, same pose framing and same style. Now: head tilted, alert and
-curious, one hand reaching out with fingertips extended as if feeling something.
-```
-
-```
-Same character, same framing and style. Now: a bright open smile, both hands
-raised, wings spread wide, more sparkles. She is delighted.
-```
-
-```
-Same character, same framing and style. Now: arms folded, brow furrowed,
-pouting, wings tense. She is cross.
-```
-
-Then repeat for Luis, attaching `src/images/luis.png`, using his base
-description from `characters.md` and asking for `asleep`, `explaining` and
-`pleased`. Have him **face right**.
 
 ## After generating
 
-Neither tool reliably gives transparent PNGs, so ask for a plain flat white or
-plain flat green background and cut it out afterwards. `rembg` handles this
-locally in one command, or use any background remover. Check the result against
-the checklist at the end of `characters.md` before dropping files into
-`src/images/`.
+Hand the magenta files over — the key-out is done locally in one command, and
+the glow is added back in CSS. Do not try to cut them out yourself.
