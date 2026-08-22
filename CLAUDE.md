@@ -154,6 +154,27 @@ Relevant to the design / data-model work being planned:
 - `content.ts` currently mixes cases in `solution` values (`'baba'` vs `'ALA'`); the action lowercases
   both sides, so this is harmless but inconsistent.
 
+## Illustrations
+
+Art lives in `src/images/`; the generation briefs live in `art-prompts/`, with
+`paste-ready.md` as the operational file. `src/images/bg-workshop.jpg` is the
+**style anchor** — new art matches it, and it is not regenerated.
+
+**When transcribing more of the source PDF, watch for emotional beats that the
+current expression set cannot cover, and add them to
+`art-prompts/paste-ready.md`.** The set is deliberately small (curious,
+delighted, cross, wistful for Braillinda; explaining, pleased, asleep, surprised
+for Luis), so a new beat — Braillinda frightened, Luis thinking — needs a new
+block written in the same shape: a `#### filename — story beat` heading, then a
+self-contained prompt beginning "Same character, same full-body framing, same
+style, same magenta background." Note it there even if the image is not
+generated yet; the list is the backlog.
+
+Two conventions worth not rediscovering: prompts must avoid "coloured pencil"
+and "paper grain" (that language produces crayon output — the anchor is smooth
+painterly gouache), and characters are generated on flat magenta with no glow or
+sparkles, since the glow is added in CSS so it can adapt per background.
+
 ## Conventions
 
 - All user-facing copy is Spanish — keep new strings in Spanish, matching the book's wording.
