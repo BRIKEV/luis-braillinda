@@ -127,6 +127,36 @@ Same character, same full-body framing, same style, same magenta background. Now
 Same character, same full-body framing, same style, same magenta background. Now: eyebrows raised, head turned slightly toward the viewer, mouth open in mild surprise. He is surprised.
 ```
 
+### Abuela — new character, no reference sprite exists
+
+Braillinda's grandmother. Four lines, all in the meadow at the start (entries 7,
+9, 10, 12). She is the fairy in the blue gown and crown in the source book,
+which matches the violet already used for her speaker chip.
+
+Staged on the **left facing RIGHT**, opposite Braillinda — same convention as
+Luis. She has **no dots on her gown**: the raised dots are Braillinda's
+signature and should stay hers.
+
+**Turn 1** — attach `src/images/characters/braillinda/curious.jpeg` for style:
+
+```
+The attached image is for style reference only. Create a NEW character in exactly the same art style: Braillinda's grandmother, an older fairy.
+
+Full body, head to feet, floating slightly above the ground, three-quarter view facing RIGHT so both eyes are visible. Nothing else in the image: no furniture, no props, no scenery, no glow, no sparkles. Plain flat magenta background filling the whole image.
+
+She is elderly: silver-white hair worn up, a kind lined face, a flowing lavender and periwinkle gown with long sleeves and plain fabric with no dots on it, a small delicate gold crown, large golden butterfly wings veined like a leaf, barefoot.
+
+Soft painterly storybook style, watercolour and gouache, smooth blended shading, warm muted colour, directional light from the left, like an animated film background.
+
+Expression: head level, one hand raised thoughtfully to her chin, eyes calm and far away. She is thinking.
+```
+
+#### `abuela-encouraging` — "Vete a verlo y ayúdale en todo lo que puedas"
+
+```
+Same character, same full-body framing, same style, same magenta background, still facing right. Now: a warm encouraging smile, one hand extended forward as if pointing the way ahead, the other resting at her side. She is encouraging.
+```
+
 ## Filenames
 
 ```
@@ -143,6 +173,9 @@ src/images/characters/luis/explaining.jpg         default
 src/images/characters/luis/pleased.jpg
 src/images/characters/luis/asleep.jpg
 src/images/characters/luis/surprised.jpg
+
+src/images/characters/abuela/thoughtful.jpg      default
+src/images/characters/abuela/encouraging.jpg
 ```
 
 Run `bash art-prompts/check-art.sh` to see which are still missing. It reads the

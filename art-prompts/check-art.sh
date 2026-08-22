@@ -33,6 +33,11 @@ check src/images/characters/luis/asleep     "asleep         she finds him dozing
 check src/images/characters/luis/surprised  "surprised      '¿Quien eres tu?'"
 
 echo
+echo "ABUELA       src/images/characters/abuela/       (faces RIGHT, floats)"
+check src/images/characters/abuela/thoughtful  "thoughtful     'Pero eso no son letras...', se quedo pensativa"
+check src/images/characters/abuela/encouraging "encouraging    'Vete a verlo y ayudale'"
+
+echo
 if [ "$MISSING" -eq 0 ]; then
   echo "All present."
 else
