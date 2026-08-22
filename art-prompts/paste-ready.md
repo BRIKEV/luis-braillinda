@@ -15,7 +15,10 @@ image model. These are the same content flattened into prose, ready to paste.
 
 - **Proporción:** 16:9
 - **Tema / style presets:** off. They fight the prose and push toward gloss.
-- **Excluir de la imagen** (under **Más**), same for all three:
+- **Excluir de la imagen** (under **Más**) — this is a *separate field from the
+  prompt box*. Never paste these words into the prompt itself: a model reads a
+  positive prompt as a list of things to draw, so putting them there asks Firefly
+  for text, people, neon and a watermark. Same list for all three:
 
 ```
 text, letters, numbers, braille, watermark, signature, people, person,
@@ -24,7 +27,14 @@ outlines, neon, oversaturated, harsh shadows, lens flare, glossy, plastic
 ```
 
 Excluding people matters: these are empty stages, and the model will happily
-populate a meadow with a wandering child otherwise.
+populate a meadow with a wandering child otherwise — and then there is nowhere
+to stand Braillinda.
+
+Adobe has moved this field between Firefly versions and some builds no longer
+have it. If you cannot find it, **skip the list rather than relocating it into
+the prompt**. The prose already says the stage is open and empty; if figures
+still appear, append the short phrase `no people, no characters` to the end of
+the prompt, which reads as an instruction rather than a shopping list.
 
 ## Order
 
