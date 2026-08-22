@@ -85,13 +85,21 @@ Expression: one hand raised mid-gesture, open palm, mouth slightly open, explain
 
 ### Braillinda — follow-up turns, same thread, no re-upload
 
+The first turn already gave you `braillinda-curious`. These are the rest.
+
+#### `braillinda-delighted` — "¡Qué fácil! Ya puedo escribir"
+
 ```
 Same character, same full-body framing, same style, same magenta background. Now: a bright open smile, both hands raised, wings spread wide. She is delighted.
 ```
 
+#### `braillinda-cross` — she kicks dot 5 across the cell
+
 ```
 Same character, same full-body framing, same style, same magenta background. Now: arms folded, brow furrowed, pouting, wings tense. She is cross.
 ```
+
+#### `braillinda-wistful` — the opening, sad she cannot read
 
 ```
 Same character, same full-body framing, same style, same magenta background. Now: head slightly lowered, a gentle sad smile, one hand touching a wing. She is wistful.
@@ -99,13 +107,21 @@ Same character, same full-body framing, same style, same magenta background. Now
 
 ### Luis — follow-up turns, same thread, no re-upload
 
+The first turn already gave you `luis-explaining`. These are the rest.
+
+#### `luis-pleased` — "Queda muy bien"
+
 ```
 Same character, same full-body framing, same style, same magenta background. Now: a warm broad smile, both hands open, head tilted back a little. He is pleased.
 ```
 
+#### `luis-asleep` — Braillinda finds him dozing and wakes him
+
 ```
 Same character, same full-body framing, same style, same magenta background. Now: seated, head tipped forward, peaceful, hands loose in his lap. He is asleep.
 ```
+
+#### `luis-surprised` — "¿Quién eres tú? ¿Qué haces aquí?"
 
 ```
 Same character, same full-body framing, same style, same magenta background. Now: eyebrows raised, head turned slightly toward the viewer, mouth open in mild surprise. He is surprised.
