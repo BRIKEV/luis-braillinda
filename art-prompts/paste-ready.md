@@ -83,19 +83,33 @@ Soft painterly storybook style, watercolour and gouache, smooth blended shading,
 Expression: one hand raised mid-gesture, open palm, mouth slightly open, explaining something patiently.
 ```
 
-### Follow-up turns — same thread, no re-upload
+### Braillinda — follow-up turns, same thread, no re-upload
 
-Only the last line changes. Always prefix:
+```
+Same character, same full-body framing, same style, same magenta background. Now: a bright open smile, both hands raised, wings spread wide. She is delighted.
+```
 
-> Same character, same full-body framing, same style, same magenta background. Now:
+```
+Same character, same full-body framing, same style, same magenta background. Now: arms folded, brow furrowed, pouting, wings tense. She is cross.
+```
 
-| File | Line to use |
-|---|---|
-| `braillinda-delighted` | a bright open smile, both hands raised, wings spread wide. She is delighted. |
-| `braillinda-cross` | arms folded, brow furrowed, pouting, wings tense. She is cross. |
-| `braillinda-wistful` | head slightly lowered, a gentle sad smile, one hand touching a wing. She is wistful. |
-| `luis-pleased` | a warm broad smile, both hands open, head tilted back a little. He is pleased. |
-| `luis-asleep` | seated, head tipped forward, peaceful, hands loose in his lap. He is asleep. |
+```
+Same character, same full-body framing, same style, same magenta background. Now: head slightly lowered, a gentle sad smile, one hand touching a wing. She is wistful.
+```
+
+### Luis — follow-up turns, same thread, no re-upload
+
+```
+Same character, same full-body framing, same style, same magenta background. Now: a warm broad smile, both hands open, head tilted back a little. He is pleased.
+```
+
+```
+Same character, same full-body framing, same style, same magenta background. Now: seated, head tipped forward, peaceful, hands loose in his lap. He is asleep.
+```
+
+```
+Same character, same full-body framing, same style, same magenta background. Now: eyebrows raised, head turned slightly toward the viewer, mouth open in mild surprise. He is surprised.
+```
 
 ## Filenames
 
