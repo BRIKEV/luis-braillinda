@@ -76,7 +76,7 @@ Expression: head tilted, alert and curious, one hand reaching out with fingertip
 ```
 This is a character from a children's story. Redraw him full body, head to feet, standing, three-quarter view facing RIGHT so both eyes are visible. Remove the desk, the book and all furniture — just the man alone. Nothing else in the image: no props, no scenery, no glow. Plain flat magenta background filling the whole image.
 
-Keep him recognisable: elderly teacher, short white beard, swept-back white hair, small round dark glasses, soft ochre-yellow shirt with a buttoned collar, warm brown quilted waistcoat.
+Keep him recognisable: elderly teacher, short white beard, swept-back white hair, soft ochre-yellow shirt with a buttoned collar, warm brown quilted waistcoat. His small round glasses are completely opaque solid dark, like black discs — his eyes are never visible through them.
 
 Soft painterly storybook style, watercolour and gouache, smooth blended shading, warm muted colour, directional light from the left, like an animated film background.
 
@@ -121,11 +121,20 @@ Same character, same full-body framing, same style, same magenta background. Now
 Same character, same full-body framing, same style, same magenta background. Now: seated, head tipped forward, peaceful, hands loose in his lap. He is asleep.
 ```
 
-#### `luis-surprised` — "¿Quién eres tú? ¿Qué haces aquí?"
+#### `luis-surprised` — "¿Quien eres tu? ¿Que haces aqui?"
+
+Gemini tends to make his glasses see-through here and put him back in a chair.
+Both are wrong: he is blind, and the eyes must never show.
 
 ```
-Same character, same full-body framing, same style, same magenta background. Now: eyebrows raised, head turned slightly toward the viewer, mouth open in mild surprise. He is surprised.
+Same character, same style, same magenta background. Full body, head to feet, STANDING, no chair and no furniture, three-quarter view facing right.
+
+His small round glasses are completely opaque solid dark, like black discs — his eyes are never visible through them at any time.
+
+Expression: mouth open in a small round O, eyebrows raised high above the glasses, head pulled back slightly, one hand raised palm-out in front of his chest as if startled. He is surprised.
 ```
+
+Low value if it keeps failing — it covers one line, and `explaining` substitutes fine.
 
 ### Abuela — new character, no reference sprite exists
 
