@@ -129,12 +129,25 @@ Same character, same full-body framing, same style, same magenta background. Now
 
 ## Filenames
 
-Two expressions each is enough for the POC.
+```
+src/images/backgrounds/bg-workshop.jpg      done, the style anchor
+src/images/backgrounds/bg-meadow.jpg        done
+src/images/backgrounds/bg-paris.jpg
 
+src/images/characters/braillinda/curious.jpg      default
+src/images/characters/braillinda/delighted.jpg
+src/images/characters/braillinda/cross.jpg
+src/images/characters/braillinda/wistful.jpg
+
+src/images/characters/luis/explaining.jpg         default
+src/images/characters/luis/pleased.jpg
+src/images/characters/luis/asleep.jpg
+src/images/characters/luis/surprised.jpg
 ```
-src/images/braillinda-curious.jpg     src/images/luis-explaining.jpg
-src/images/braillinda-delighted.jpg   src/images/luis-pleased.jpg
-```
+
+Run `bash art-prompts/check-art.sh` to see which are still missing. It reads the
+folders, so it stays accurate as files land. Two of each character is enough to
+start the staging; the rest can follow.
 
 ## After generating
 
