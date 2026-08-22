@@ -50,6 +50,8 @@ These are what the code needs, and the current assets get some of them wrong.
 
 ## Files
 
+- `paste-ready.md` — **start here.** The briefs flattened into prose you can
+  paste straight into Firefly or Gemini, with the settings for each.
 - `style.md` — the shared style block. Prepend it to every prompt.
 - `backgrounds.md` — the three story locations.
 - `characters.md` — both characters and their expressions.
