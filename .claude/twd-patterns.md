@@ -22,6 +22,17 @@ If port 5173 is already taken, Vite falls back to 5174 and the relay needs telli
 npx twd-relay run --port 5174
 ```
 
+## What to test: flows, not units
+
+**Flow tests are the default and the priority.** A test should walk a real
+scenario the way a reader would — land on a page, read what is there, click
+something, see what changed. Cover journeys and states, not individual
+components in isolation.
+
+Unit tests are the exception, reserved for a specific function with real logic
+worth pinning down on its own — the braille dot encoding, or the message parser.
+Do not write a unit test for a component just because it exists.
+
 ## Standard Imports
 
 ```typescript
