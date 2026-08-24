@@ -113,13 +113,18 @@ between words.
 `/story` is a visual novel: a fixed full-bleed backdrop with the cast standing on
 it, and a parchment dialogue panel over the lower part of the stage.
 
-- `src/routes/Story/scene.ts` decides which backdrop and which characters appear
-  on a given page, plus per-page expression beats. **It is presentation only** —
-  it reads nothing but the page number, and deliberately lives beside the route
-  so `content.ts` stays a plain script. Retune staging there, never in the story
-  data.
-- `src/components/Stage.tsx` renders it. Sprites and backdrops resolve through
-  `import.meta.glob`, so `scene.ts` names assets as plain strings.
+**Every page carries its own staging.** An `Entry` in `content.ts` names its
+`backdrop`, who is on the `left` and `right`, and optionally `leftAs`/`rightAs`
+for expression. Nothing is inherited from the previous entry. That repeats the
+same three fields down most of the file, which is the deliberate trade — the
+story is transcribed by hand and still growing, and an explicit entry can never
+have its staging shifted by a line inserted above it. The field types are string
+unions, so a typo fails the build.
+
+- `Stage.tsx` takes the whole entry and renders it. Sprites and backdrops resolve
+  through `import.meta.glob`, so `content.ts` names assets as plain strings.
+  A `leftAs` naming an expression that character has no art for logs a dev
+  warning rather than silently rendering nothing.
 - Three lighting states: `speaking` (lit, forward), `listening` (dimmed, pushed
   back), and `ambient` — used when nobody speaks, during narration and
   exercises. With only the first two, narration dimmed everybody at once and a
@@ -130,6 +135,9 @@ it, and a parchment dialogue panel over the lower part of the stage.
   stand. She faces left and they face right, so they face each other.
 - `parseMessage` is shared by the panel and the history dialog so both expand
   `<BRAILLE>` and `<br>` identically.
+
+An entry is an exercise when it has a `solution` — there is no separate flag.
+The old `exercise: boolean` was redundant with it across all 69 entries.
 
 ### Design language
 

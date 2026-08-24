@@ -90,11 +90,12 @@ in the query string, so a test can jump straight to any state by visiting a URL:
 |---|---|
 | `/story?page=1` | first page, narration, meadow |
 | `/story?page=7` | the abuela speaking |
-| `/story?page=30` | an exercise (`exercise: true`, solution `baba`) |
+| `/story?page=30` | an exercise (has a `solution`, `baba`) |
 | `/story?page=N&dictionary=open` | dictionary dialog open |
 | `/story?page=N&log=open` | history dialog open |
 
-`page` is a 1-based index into `bookContent`. **Do not hard-code page numbers
+`page` is a 1-based index into `bookContent`. An entry is an exercise when it
+has a `solution`; there is no separate `exercise` flag. **Do not hard-code page numbers
 for story beats in tests** — the story is only partly transcribed and inserting
 an entry shifts every index after it. Derive them, or assert on content.
 

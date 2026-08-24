@@ -7,7 +7,6 @@ import Log from "../../components/Log";
 import Dictionary from "../../components/Dictionary";
 import { buttonStyles } from "../../components/styles";
 import { bookContent } from "../../data/content";
-import { sceneFor, speakerSlot } from "./scene";
 import type { loader } from "./loader";
 
 export default function Story() {
@@ -23,12 +22,9 @@ export default function Story() {
     });
   };
 
-  const scene = sceneFor(page);
-  const speaking = speakerSlot(content.author);
-
   return (
     <div className="relative flex min-h-dvh flex-col">
-      <Stage scene={scene} speaking={speaking} />
+      <Stage entry={content} />
 
       <header className="relative z-10 px-3 pt-3 sm:px-6 sm:pt-5">
         <nav className="mx-auto flex max-w-3xl items-center gap-2">
@@ -72,7 +68,7 @@ export default function Story() {
           message={content.message}
           progress={page / bookContent.length}
         >
-          {content.exercise ? (
+          {content.solution ? (
             <ExerciseForm pageNumber={page} />
           ) : (
             <div className="flex flex-wrap items-center gap-3">
