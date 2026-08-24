@@ -25,6 +25,10 @@ const variants = {
   ghost: "text-muted hover:text-parchment hover:bg-parchment/10",
   /* On a parchment surface rather than the dusk ground. */
   onPaper: "border-2 border-ink/20 text-ink hover:border-ink/45 hover:bg-ink/5",
+  /* Over the illustrated stage, where the backdrop behind is unpredictable. */
+  glass:
+    "border border-parchment/25 bg-dusk-deep/55 text-parchment backdrop-blur-sm " +
+    "hover:border-parchment/50 hover:bg-dusk-deep/75",
 } as const;
 
 export type ButtonVariant = keyof typeof variants;

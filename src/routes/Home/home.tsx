@@ -1,19 +1,20 @@
 import { Link } from "react-router";
 import { BrailleMessage } from "../../components/Braille/BrailleMessage";
 import { brailleAlphabet } from "../../components/Braille/alphabet";
-import braillindaImage from "../../images/braillinda.png";
+import braillindaImage from "../../images/characters/braillinda/delighted.webp";
+import meadowImage from "../../images/backgrounds/bg-meadow.webp";
 import { buttonStyles } from "../../components/styles";
 
 export default function Home() {
   return (
-    <main className="relative min-h-dvh overflow-hidden">
-      {/* Lantern light, bleeding in from the top right the way it does in the
-          classroom illustration. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 -right-32 h-[36rem] w-[36rem] rounded-full
-                   bg-honey/20 blur-3xl md:-right-20"
-      />
+    <main className="relative isolate min-h-dvh overflow-hidden">
+      {/* The meadow the story opens in, pushed well back so it reads as
+          atmosphere and never competes with the text on top of it. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <img src={meadowImage} alt="" className="h-full w-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-dusk/85 via-dusk/75 to-dusk" />
+        <div className="absolute -top-40 -right-32 h-[36rem] w-[36rem] rounded-full bg-honey/20 blur-3xl md:-right-20" />
+      </div>
 
       <div className="relative mx-auto max-w-6xl px-5 py-10 md:px-10 md:py-16">
         {/* The dot border from the book's own title page. */}
