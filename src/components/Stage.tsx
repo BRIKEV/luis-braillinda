@@ -39,11 +39,14 @@ interface FigureProps {
   lit: Lit;
 }
 
+/* Never dim with `opacity`: it makes the backdrop show through the character
+   and they read as a ghost rather than as someone standing in shadow. Push
+   them back with brightness and saturation instead, which keeps them solid. */
 const LIGHTING: Record<Lit, string> = {
-  speaking: "z-[2] scale-100 opacity-100 drop-shadow-[0_12px_30px_rgba(20,14,8,0.45)]",
-  listening: "z-[1] scale-[0.94] opacity-80 brightness-[0.72] saturate-[0.78]",
+  speaking: "z-[2] scale-100 drop-shadow-[0_12px_30px_rgba(20,14,8,0.45)]",
+  listening: "z-[1] scale-[0.94] brightness-[0.66] saturate-[0.72] contrast-[0.95]",
   /* Narration and exercises: no-one is talking, so no-one is pushed back. */
-  ambient: "z-[1] scale-[0.97] opacity-95 brightness-[0.9]",
+  ambient: "z-[1] scale-[0.97] brightness-[0.88] saturate-[0.94]",
 };
 
 const Figure = ({ casting, side, lit }: FigureProps) => {

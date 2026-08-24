@@ -193,6 +193,22 @@ self-contained prompt beginning "Same character, same full-body framing, same
 style, same magenta background." Note it there even if the image is not
 generated yet; the list is the backlog.
 
+Sprites are generated on flat magenta and keyed locally with
+`python3 art-prompts/key-magenta.py <files>`, which writes a `.webp` with alpha
+beside each input. Two things that pass on a magenta canvas and only fail once
+the sprite is over a scene, both already handled in that script:
+
+- A plain colour-distance key gives partial alpha to any subject colour that
+  happens to sit near the key. Luis's brown waistcoat leaked the room through
+  his clothes that way. Only background **connected to the image border** is
+  removable.
+- Background enclosed by the figure — the gap in Luis's chair — is never reached
+  by that flood, so it is removed separately, but only where the colour matches
+  the key almost exactly.
+
+Never dim a character with CSS `opacity`: the backdrop shows through and they
+read as a ghost. Use `brightness`/`saturate`, which keeps them solid.
+
 Two conventions worth not rediscovering: prompts must avoid "coloured pencil"
 and "paper grain" (that language produces crayon output — the anchor is smooth
 painterly gouache), and characters are generated on flat magenta with no glow or
