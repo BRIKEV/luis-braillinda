@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:ci": "npx twd-cli run",
+    "dev:ci": "CI=true vite",
+    "collect:coverage:text": "npx nyc report --reporter=text --temp-dir .nyc_output",
+    "collect:coverage:html": "npx nyc report --reporter=html --temp-dir .nyc_output",
+    "collect:coverage:lcov": "npx nyc report --reporter=lcov --temp-dir .nyc_output"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -29,10 +34,13 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
+    "nyc": "^18.0.0",
+    "twd-cli": "^1.4.0",
     "twd-js": "^1.9.0",
     "twd-relay": "^1.3.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vite-plugin-istanbul": "^9.0.1"
   }
 }

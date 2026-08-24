@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { twd } from 'twd-js/vite-plugin'
 import { twdRemote } from 'twd-relay/vite'
+import istanbul from 'vite-plugin-istanbul'
 import path from 'path'
 
 // https://vite.dev/config/
@@ -19,6 +20,15 @@ export default defineConfig({
       position: 'left',
     }),
     twdRemote() as PluginOption,
+    // Coverage instrumentation. `requireEnv` keeps it off during ordinary
+    // `npm run dev`; CI turns it on by setting CI=true via the dev:ci script.
+    // Production builds are never instrumented (forceBuildInstrument is off).
+    istanbul({
+      include: 'src/*',
+      exclude: ['node_modules', '**/*.twd.test.ts'],
+      requireEnv: !process.env.CI,
+      extension: ['.ts', '.tsx'],
+    }),
   ],
   resolve: {
     alias: {
