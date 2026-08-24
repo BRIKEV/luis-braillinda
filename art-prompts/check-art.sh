@@ -31,6 +31,7 @@ check src/images/characters/luis/explaining "explaining     default, most dialog
 check src/images/characters/luis/pleased    "pleased        'Queda muy bien'"
 check src/images/characters/luis/asleep     "asleep         she finds him dozing"
 check src/images/characters/luis/surprised  "surprised      '¿Quien eres tu?'"
+check src/images/characters/luis/annoyed    "annoyed        '¡Estoy harto de tus alas!'"
 
 echo
 echo "ABUELA       src/images/characters/abuela/       (faces RIGHT, floats)"

@@ -136,6 +136,16 @@ Expression: mouth open in a small round O, eyebrows raised high above the glasse
 
 Low value if it keeps failing — it covers one line, and `explaining` substitutes fine.
 
+#### `luis-annoyed` — "¡Estoy harto de tus alas!"
+
+Not generated yet. Braillinda keeps writing about her wings and Luis loses
+patience with her. `explaining` stands in for now, which reads far too calm for
+the line.
+
+```
+Same character, same full-body framing, same style, same magenta background, still facing right. Now: brows drawn down above his dark glasses, mouth set in a flat line, one hand raised palm-up in exasperation, shoulders slightly raised. He is exasperated but still fond — never angry or frightening.
+```
+
 ### Abuela — new character, no reference sprite exists
 
 Braillinda's grandmother. Four lines, all in the meadow at the start (entries 7,
@@ -182,6 +192,7 @@ src/images/characters/luis/explaining.jpg         default
 src/images/characters/luis/pleased.jpg
 src/images/characters/luis/asleep.jpg
 src/images/characters/luis/surprised.jpg
+src/images/characters/luis/annoyed.jpg          not yet generated
 
 src/images/characters/abuela/thoughtful.jpg      default
 src/images/characters/abuela/encouraging.jpg

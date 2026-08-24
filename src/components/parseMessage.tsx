@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { BrailleMessage } from "./Braille/BrailleMessage";
 
-const braillePattern = /<BRAILLE>([A-Za-z ]+)<\/BRAILLE>/g;
+/* Accented vowels are part of the alphabet from the "vocales acentuadas"
+   section onward. An accent outside this class does not fail loudly — the
+   block stops matching and the literal <BRAILLE> tag leaks onto the page. */
+const braillePattern = /<BRAILLE>([A-Za-zÁÉÍÓÚÜÑáéíóúüñ ]+)<\/BRAILLE>/g;
 const lineBreakPattern = /<br>/g;
 
 /**

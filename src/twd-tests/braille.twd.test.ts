@@ -25,7 +25,7 @@ const DOTS_IN_DOM_ORDER = [1, 4, 2, 5, 3, 6];
 const cell = (...dots: number[]) =>
   DOTS_IN_DOM_ORDER.map((dot) => (dots.includes(dot) ? "1" : "-")).join("");
 
-/** The eleven signs Luis and Braillinda have invented so far. */
+/** The signs Luis and Braillinda have invented so far. */
 const taught: Record<string, number[]> = {
   a: [1],
   b: [1, 2],
@@ -38,6 +38,13 @@ const taught: Record<string, number[]> = {
   o: [1, 3, 5],
   s: [2, 3, 4],
   u: [1, 3, 6],
+  // The "vocales acentuadas" section, plus the "t" that "bonitas" needs.
+  "á": [1, 2, 3, 5, 6],
+  "í": [3, 4],
+  t: [2, 3, 4, 5],
+  "ú": [2, 3, 4, 5, 6],
+  "ó": [3, 4, 6],
+  "é": [2, 3, 4, 6],
 };
 
 /** Signs still ahead in the story, sampled across the alphabet. `ñ` is here
@@ -74,7 +81,7 @@ describe("Braille alphabet", () => {
     expect(brailleAlphabet.u).to.equal("1---11");
   });
 
-  it("encodes the eleven signs the story has already taught as real braille", () => {
+  it("encodes the signs the story has already taught as real braille", () => {
     check(taught);
   });
 
