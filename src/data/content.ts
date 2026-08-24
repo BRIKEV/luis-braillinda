@@ -19,7 +19,7 @@ export type Who = "braillinda" | "luis" | "abuela";
 /** The expressions each character actually has art for. */
 export interface ExpressionOf {
   braillinda: "curious" | "delighted" | "cross" | "wistful";
-  luis: "explaining" | "pleased" | "asleep" | "surprised";
+  luis: "explaining" | "pleased" | "asleep" | "surprised" | "annoyed";
   abuela: "thoughtful" | "encouraging";
 }
 
@@ -593,6 +593,7 @@ export const bookContent: Entry[] = [
     backdrop: "workshop",
     left: "luis",
     right: "braillinda",
+    leftAs: "annoyed",
   },
   {
     author: "Braillinda",
