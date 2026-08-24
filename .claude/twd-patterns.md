@@ -22,6 +22,21 @@ If port 5173 is already taken, Vite falls back to 5174 and the relay needs telli
 npx twd-relay run --port 5174
 ```
 
+## If the suite fails before it runs anything
+
+Symptom: `Failed to fetch dynamically imported module: …/.vite/deps/runner.es-*.js`
+(a Vite 504 "Outdated Optimize Dep"), often with
+`[twd-relay] Another browser instance connected — this instance will not reconnect`
+in the dev log.
+
+Cause: the relay serves one browser client, and a stale tab left over from an
+earlier session holds the slot with an out-of-date dep graph. It is not a broken
+test — the existing suite fails identically.
+
+Fix: close **every** `localhost:5173` tab, restart the dev server, then open
+exactly one tab. Do not clear `node_modules/.vite` while the server is running;
+that makes it worse.
+
 ## What to test: flows, not units
 
 **Flow tests are the default and the priority.** A test should walk a real
