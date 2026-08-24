@@ -108,6 +108,29 @@ between words.
 - Character art is imported from `src/images/` (bundled by Vite). Both character sprites are palette
   PNGs carrying transparency via a `tRNS` chunk; `background.png` is opaque.
 
+### Story staging
+
+`/story` is a visual novel: a fixed full-bleed backdrop with the cast standing on
+it, and a parchment dialogue panel over the lower part of the stage.
+
+- `src/routes/Story/scene.ts` decides which backdrop and which characters appear
+  on a given page, plus per-page expression beats. **It is presentation only** —
+  it reads nothing but the page number, and deliberately lives beside the route
+  so `content.ts` stays a plain script. Retune staging there, never in the story
+  data.
+- `src/components/Stage.tsx` renders it. Sprites and backdrops resolve through
+  `import.meta.glob`, so `scene.ts` names assets as plain strings.
+- Three lighting states: `speaking` (lit, forward), `listening` (dimmed, pushed
+  back), and `ambient` — used when nobody speaks, during narration and
+  exercises. With only the first two, narration dimmed everybody at once and a
+  lone character on an empty meadow became almost invisible.
+- Characters are cut off at the bottom by the dialogue panel. That is
+  deliberate: it removes the need to land feet convincingly on a painted floor.
+  Braillinda floats and is drawn smaller, being a fairy; Luis and the abuela
+  stand. She faces left and they face right, so they face each other.
+- `parseMessage` is shared by the panel and the history dialog so both expand
+  `<BRAILLE>` and `<br>` identically.
+
 ### Design language
 
 Two registers, taken from the story itself:
