@@ -16,13 +16,29 @@ export type Backdrop = "meadow" | "paris" | "workshop";
 /** Characters with sprites in `src/images/characters`. */
 export type Who = "braillinda" | "luis" | "abuela";
 
-/** Expressions that exist as art. Grouped by who they belong to. */
-export type Expression =
-  | "curious" | "delighted" | "cross" | "wistful"
-  | "explaining" | "pleased" | "asleep" | "surprised"
-  | "thoughtful" | "encouraging";
+/** The expressions each character actually has art for. */
+export interface ExpressionOf {
+  braillinda: "curious" | "delighted" | "cross" | "wistful";
+  luis: "explaining" | "pleased" | "asleep" | "surprised";
+  abuela: "thoughtful" | "encouraging";
+}
 
-export interface Entry {
+/* Pairing the character with their own expressions means `luisAs: "cross"`
+   fails to compile — "cross" is art Braillinda has and Luis does not. A flat
+   union of every expression would accept it and quietly render nothing. */
+type LeftCast =
+  | { left: null; leftAs?: never }
+  | { left: "luis"; leftAs?: ExpressionOf["luis"] }
+  | { left: "abuela"; leftAs?: ExpressionOf["abuela"] }
+  | { left: "braillinda"; leftAs?: ExpressionOf["braillinda"] };
+
+type RightCast =
+  | { right: null; rightAs?: never }
+  | { right: "luis"; rightAs?: ExpressionOf["luis"] }
+  | { right: "abuela"; rightAs?: ExpressionOf["abuela"] }
+  | { right: "braillinda"; rightAs?: ExpressionOf["braillinda"] };
+
+interface Line {
   /** Shown as the speaker chip. "Narrador" gets none — narration is a
    *  different register, not a character with a name tag. */
   author: "Narrador" | "Braillinda" | "Luis" | "Abuela" | "Tu turno";
@@ -36,17 +52,10 @@ export interface Entry {
   solution?: string;
 
   backdrop: Backdrop;
-
-  /** Stage left. Luis and the abuela are drawn facing right. */
-  left: Who | null;
-  /** Stage right. Braillinda is drawn facing left, so they face each other. */
-  right: Who | null;
-
-  /** Omit for the character's default expression. Must be one they have art
-   *  for, or the sprite silently fails to load — Stage warns in dev. */
-  leftAs?: Expression;
-  rightAs?: Expression;
 }
+
+/** Stage left faces right, stage right faces left, so they face each other. */
+export type Entry = Line & LeftCast & RightCast;
 
 export const bookContent: Entry[] = [
   {

@@ -1,85 +1,16 @@
-import type { Entry, Expression, Who } from "../data/content";
-
-/* Vite resolves these at build time; the maps let content.ts name assets as
-   plain strings instead of every route importing every sprite. */
-const sprites = import.meta.glob("../images/characters/*/*.webp", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
+import type { Entry, Who } from "../data/content";
+import Figure, { type Lit } from "./Figure";
 
 const backdrops = import.meta.glob("../images/backgrounds/*.webp", {
   eager: true,
   import: "default",
 }) as Record<string, string>;
 
-const NAMES: Record<Who, string> = {
-  braillinda: "El hada Braillinda",
-  luis: "El maestro Luis",
-  abuela: "La abuela de Braillinda",
-};
-
-/** Used when an entry does not name an expression. */
-const DEFAULT_AS: Record<Who, Expression> = {
-  braillinda: "curious",
-  luis: "explaining",
-  abuela: "thoughtful",
-};
-
-/* Braillinda is a fairy: smaller than the adults, and she floats rather than
-   standing, so she sits higher off the floor. */
-const FIGURE: Record<Who, string> = {
-  braillinda: "h-[50%] sm:h-[48%] max-h-[62vh] bottom-[17%] sm:bottom-[15%]",
-  luis: "h-[64%] sm:h-[56%] max-h-[72vh] bottom-[2%]",
-  abuela: "h-[58%] sm:h-[52%] max-h-[68vh] bottom-[8%]",
-};
-
-/** Which slot the speaker occupies, so the stage knows who to light. */
+/** Which character the current speaker is, so the stage knows who to light. */
 const AUTHOR_IS: Record<string, Who> = {
   braillinda: "braillinda",
   luis: "luis",
   abuela: "abuela",
-};
-
-type Lit = "speaking" | "listening" | "ambient";
-
-/* Never dim with `opacity`: it makes the backdrop show through the character
-   and they read as a ghost rather than as someone standing in shadow. Push
-   them back with brightness and saturation instead, which keeps them solid. */
-const LIGHTING: Record<Lit, string> = {
-  speaking: "z-[2] scale-100 drop-shadow-[0_12px_30px_rgba(20,14,8,0.45)]",
-  listening: "z-[1] scale-[0.94] brightness-[0.66] saturate-[0.72] contrast-[0.95]",
-  /* Narration and exercises: no-one is talking, so no-one is pushed back. */
-  ambient: "z-[1] scale-[0.97] brightness-[0.88] saturate-[0.94]",
-};
-
-const Figure = ({ who, as, side, lit }: {
-  who: Who;
-  as: Expression | undefined;
-  side: "left" | "right";
-  lit: Lit;
-}) => {
-  const expression = as ?? DEFAULT_AS[who];
-  const src = sprites[`../images/characters/${who}/${expression}.webp`];
-
-  if (!src) {
-    // A typo in `leftAs`/`rightAs` would otherwise make the character silently
-    // vanish, which is a confusing thing to debug from the page alone.
-    if (import.meta.env.DEV) {
-      console.warn(`[Stage] no sprite for ${who}/${expression}.webp — check content.ts`);
-    }
-    return null;
-  }
-
-  return (
-    <img
-      src={src}
-      alt={NAMES[who]}
-      className={`pointer-events-none absolute w-auto max-w-[58%] object-contain
-        transition-all duration-500 ease-out ${FIGURE[who]}
-        ${side === "left" ? "left-[1%] sm:left-[6%]" : "right-[1%] sm:right-[6%]"}
-        ${LIGHTING[lit]}`}
-    />
-  );
 };
 
 /**
