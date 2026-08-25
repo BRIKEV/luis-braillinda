@@ -5,7 +5,7 @@ import { bookContent, type Entry } from "../data/content";
 /** A page is an exercise when it has something to grade, typed or picked.
  *  Exercise pages replace Continuar and Volver with their answer form. */
 const isExercise = (entry: Entry) => Boolean(entry.solution ?? entry.blanks);
-import { dictionary } from "../components/Braille/dictionary";
+import { dictionary, signName } from "../components/Braille/dictionary";
 
 /**
  * Moving through the story: forwards, backwards, straight to a page by URL, and
@@ -146,9 +146,16 @@ describe("Story navigation", () => {
         ),
         "be.visible",
       );
+      /* Every taught sign gets a row, in order. Captions come from `signName`
+         so the list stays the assertion; the one caption that is not just its
+         own key is spelled out below, where a rename has to be deliberate. */
       expect([...dialog.querySelectorAll("li")].map((item) => collapse(item.textContent))).to.deep.equal(
-        letters,
+        letters.map(signName),
       );
+      expect(
+        letters.map(signName),
+        "the capital sign is a prefix with no letter to print, so it is named",
+      ).to.contain("mayúscula");
       expect(searchParam("dictionary")).to.equal("open");
 
       await user.click(screenDomGlobal.getByRole("button", { name: "Cerrar" }));

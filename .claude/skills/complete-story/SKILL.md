@@ -72,8 +72,15 @@ Each `Entry` carries its own `backdrop`, `left`, `right` and optional
 `npm run build` catches a mistyped backdrop or an expression the character has no
 art for.
 
-Afterwards run `npm run lint` and `npm run build`, and ask the user to run
-`npm run test:ci` — they run the suite, not you.
+**Run `npx twd-cli run` before you touch a file**, so you know what was already
+green. It is headless, needs only the dev server on :5173, and takes about seven
+seconds — `twd-relay` is the one that needs a visible browser, and nothing here
+needs it. Run it again afterwards, along with `npm run lint` and `npm run build`.
+
+If a test fails after your change, it is a regression until proven otherwise.
+Never edit an assertion to match code you just wrote without first confirming the
+assertion is genuinely wrong, and never write a deterministic failure off as
+flakiness — reproduce it.
 
 ## Tests: usually none
 

@@ -20,10 +20,29 @@ npm run dev       # Vite dev server
 npm run build     # tsc -b && vite build
 npm run lint      # eslint .
 npm run preview   # serve the production build
+
+npx twd-cli run                       # the whole TWD suite, headless, ~7s
+npx twd-cli run --test "name"         # one test by name; repeatable
+npm run test:ci                       # same as twd-cli run
 ```
 
-No test runner is configured (no vitest/jest, no test files). If tests are wanted, that's a setup task,
-not a missing script.
+### Run the suite before you change anything
+
+`twd-cli run` is **headless** and needs nothing but the dev server on :5173. Only `twd-relay` needs a
+visible browser window, and nothing here requires it. So there is no excuse for editing first:
+
+1. **Run the suite before touching code.** Green-before tells you what you broke; without it you are
+   guessing which failures are yours.
+2. **Run it again after.** A new failure is a regression until proven otherwise.
+3. **Never edit a test to match code you just wrote** unless you have first confirmed the test's
+   expectation is genuinely wrong. Renaming a caption and then "fixing" the assertion that caught it is
+   how a real change gets rubber-stamped. This has already happened once here: the capital sign changed
+   a Diccionario caption from `^` to `mayúscula`, and the honest fix was to give the dialog and the test
+   one source of truth (`signName`), not to paste the new string into the assertion.
+4. Do not diagnose a deterministic failure as flakiness. Reproduce it first.
+
+Coverage only reports when the server runs with `CI=true` (`npm run dev:ci`); against a plain
+`npm run dev` the run prints "No code coverage data found" and that is not a failure.
 
 `npm run lint` and `npm run build` are both green — keep them that way. `vite build` still prints one
 warning: `vite.config.ts` uses `__dirname`, unsupported by Vite's future native config loader

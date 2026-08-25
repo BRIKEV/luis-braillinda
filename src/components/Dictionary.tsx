@@ -1,14 +1,11 @@
 import { Dialog } from "./Dialog";
-import { dictionary } from "./Braille/dictionary";
+import { dictionary, signName } from "./Braille/dictionary";
 import { BrailleCharacter } from "./Braille/BrailleCharacter";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
-
-/** Signs that are not letters have nothing to print as their own caption. */
-const NAMES: Record<string, string> = { "^": "mayúscula" };
 
 export default function Dictionary({ isOpen, onClose }: Props) {
   const letters = Object.keys(dictionary);
@@ -24,10 +21,10 @@ export default function Dictionary({ isOpen, onClose }: Props) {
             <BrailleCharacter character={letter} size="lg" />
             <span
               className={`font-display font-semibold text-ink text-center ${
-                NAMES[letter] ? "text-sm" : "text-xl"
+                signName(letter).length > 1 ? "text-sm" : "text-xl"
               }`}
             >
-              {NAMES[letter] ?? letter}
+              {signName(letter)}
             </span>
           </li>
         ))}

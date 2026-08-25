@@ -23,3 +23,10 @@ const taught = [
 export const dictionary: BrailleMap = Object.fromEntries(
   taught.map((letter) => [letter, brailleAlphabet[letter]]),
 );
+
+/** Signs that are not letters have nothing to print as their own caption. */
+const names: Record<string, string> = { "^": "mayúscula" };
+
+/** What a sign is called under its cell in the Diccionario. A letter is called
+ *  by itself; the capital sign is a prefix and has to be named. */
+export const signName = (sign: string) => names[sign] ?? sign;
