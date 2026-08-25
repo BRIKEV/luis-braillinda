@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "react-router";
-import { accentAt, bookContent } from "../../data/content";
+import { accentAt, bookContent, replyTo } from "../../data/content";
 
 /** A wrong answer is a deliberate 400: the fetcher surfaces the body as data,
  *  so the page can say what is wrong without a success flag meaning failure. */
@@ -42,6 +42,18 @@ export async function action({ request }: ActionFunctionArgs) {
       const accepted = [blank.word, ...(blank.also ?? [])].map((word) => word[accentAt(word)]);
       return accepted.includes(answer as string) ? [] : [index];
     });
+
+    return wrong.length ? rejected({ wrong }) : { success: true };
+  }
+
+  if (findContent.questions) {
+    /* One radio group per question, so an unanswered one and a wrong one
+       arrive the same way — as an index the reader still has to fix. Answers
+       live only here: with two options each, a verdict computed in the browser
+       would be a coin flip away from being read straight off it. */
+    const wrong = findContent.questions.flatMap((question, index) =>
+      body.get(`question-${index}`) === replyTo(question) ? [] : [index],
+    );
 
     return wrong.length ? rejected({ wrong }) : { success: true };
   }

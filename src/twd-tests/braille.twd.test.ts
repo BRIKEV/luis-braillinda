@@ -25,7 +25,8 @@ const DOTS_IN_DOM_ORDER = [1, 4, 2, 5, 3, 6];
 const cell = (...dots: number[]) =>
   DOTS_IN_DOM_ORDER.map((dot) => (dots.includes(dot) ? "1" : "-")).join("");
 
-/** The signs Luis and Braillinda have invented so far, letters and not. */
+/** The signs the story has put in front of the reader so far, letters and not
+ *  — including the two it never bothered to teach. */
 const taught: Record<string, number[]> = {
   a: [1],
   b: [1, 2],
@@ -38,13 +39,16 @@ const taught: Record<string, number[]> = {
   o: [1, 3, 5],
   s: [2, 3, 4],
   u: [1, 3, 6],
-  // The "vocales acentuadas" section, plus the "t" that "bonitas" needs.
+  // The "vocales acentuadas" section.
   "á": [1, 2, 3, 5, 6],
   "í": [3, 4],
-  t: [2, 3, 4, 5],
   "ú": [2, 3, 4, 5, 6],
   "ó": [3, 4, 6],
   "é": [2, 3, 4, 6],
+  // Letters the book never teaches but does use: "t" in "bonitas", "r" in
+  // "una buena obra". They still have to be real braille.
+  t: [2, 3, 4, 5],
+  r: [1, 2, 3, 5],
   // Not a letter: the capital sign, written before the letter it raises.
   // Braillinda proposes dot 6 alone and Luis talks her up to 4 and 6.
   "^": [4, 6],

@@ -73,23 +73,28 @@ Grading ignores case **unless the solution itself carries a capital** — only t
 capital sign has any reason to care, and it says so by capitalising its own answer, so there is no flag
 on the entry. Stray and repeated spaces are always forgiven.
 
-`action.ts` grades both kinds of exercise and returns `{success:true}` or a **400 JSON response**
-`{success:false}`. `Form.tsx` and `BlanksForm.tsx` read both through `useFetcher`, so a wrong answer
-is a deliberate non-2xx that the fetcher surfaces as data. The fill-in reply also carries
-`wrong: number[]` — with eight words on a page, "no" without saying which is not usable.
+`action.ts` grades all three kinds of exercise and returns `{success:true}` or a **400 JSON response**
+`{success:false}`. `Form.tsx`, `BlanksForm.tsx` and `QuestionsForm.tsx` all read it through
+`useFetcher`, so a wrong answer is a deliberate non-2xx that the fetcher surfaces as data. The two
+multi-item exercises also carry `wrong: number[]` — with eight words or four questions on a page,
+"no" without saying which is not usable.
+
+Answers never reach the browser. That matters most for the yes/no pages: with two options per
+question, a verdict computed client-side would be one coin flip from being read off it.
 
 ### Content model (`src/data/content.ts`)
 
 The whole book is one ordered `Entry[]`; array position *is* the page number. Every entry carries
 `author`, `message` and `backdrop` plus its own staging (see **Story staging**), and at most one of
-the two exercise fields:
+the three exercise fields:
 
 ```ts
 solution: string      // read the braille, type it back. Graded case-insensitively.
 blanks: Blank[]       // supply the accented vowel missing from each word.
+questions: Question[] // answer sí or no about a braille text on the card before.
 ```
 
-They are a union in the type, so no entry can carry both.
+They are a union in the type, so no entry can carry two.
 
 `message` carries two inline markup forms, parsed at render time by `src/components/Messages.tsx`:
 
@@ -122,10 +127,17 @@ index:  0 1     dots:  1 4
 
 So `l: '1-1-1-'` = dots 1,2,3 and `d: '11-1--'` = dots 1,4,5.
 
-The dictionary intentionally contains **only the signs the story has taught so far** — 18 of them now,
-the letters plus the capital sign. Any character missing from it renders the literal string
-`Invalid character`, so a `<BRAILLE>` block must never use a letter the story hasn't introduced yet —
-extend `dictionary.ts` in the same change that adds the story page teaching that letter.
+The dictionary intentionally contains **only the signs the story has met so far** — 19 of them now.
+Any character missing from it renders a poppy `?`, so a `<BRAILLE>` block must never use a letter the
+story hasn't introduced yet — extend `dictionary.ts` in the same change that adds the story page
+teaching that letter.
+
+**The book does not always teach a letter before using it.** PDF page 15 recaps exactly what the
+reader knows — `a b d e i l m n o s u`, the five accented vowels, the capital sign — and yet `t`
+turns up in "bonitas" and `r` in "una buena obra" on page 14 without a word of introduction. Both are
+in `taught` because the pages that use them have to render, and they sit in their own group there
+rather than filed among the accents as if they belonged. Expect more of these: when a new page needs
+a letter the book never taught, add it to that group and say where it came from.
 
 `BrailleMessage` splits on spaces, renders each word as a run of cells, and inserts an empty spacer cell
 between words. It also expands capitals: an uppercase letter emits the **capital sign** (dots 4,6,
@@ -181,8 +193,11 @@ unions, so a typo fails the build.
 - `parseMessage` is shared by the panel and the history dialog so both expand
   `<BRAILLE>` and `<br>` identically.
 
-An entry is an exercise when it has a `solution` or `blanks` — there is no separate flag.
-The old `exercise: boolean` was redundant with it across all 69 entries.
+An entry is an exercise when it has a `solution`, `blanks` or `questions` — there is no separate
+flag. The old `exercise: boolean` was redundant with it across all 69 entries the book had then.
+Ask that question through **`isExercise()` in `content.ts`**, never by hand: three test files each
+open-coded `!entry.solution && !entry.blanks`, and every one of them was silently a kind out of date
+the moment a third exercise arrived.
 
 ### The fill-in exercise (`BlanksForm.tsx`, `BlankItem.tsx`)
 
@@ -208,6 +223,34 @@ experience, and the code says so rather than implying otherwise.
 
 The book prints all 24 words in one block; they are split across three entries so the check button is
 never far. Splitting is a rendering choice — it is still one PDF page.
+
+### The yes/no exercise (`QuestionsForm.tsx`, `QuestionItem.tsx`)
+
+Page 14 of the PDF prints seven sentences in braille and then asks four questions about them, each
+with *sí no* beside it. A `Question` is just `{ ask, yes }` — the book states nothing else, so
+nothing else is stored.
+
+`REPLIES` and `replyTo()` in `content.ts` hold the two answers as they are both **printed on the
+radio and compared in the action**. One source for both, so relabelling a button can never silently
+stop it matching.
+
+Each question is a `<fieldset>` of two native radios, and unlike the fill-in blanks **the legend is
+visible**: a question is words, there is nothing drawn to hide from assistive tech, and no
+`aria-hidden` half to keep in step. The legend carries its number too — `1. ¿El nombre Elias
+aparece entre esas frases?` — because the verdict counts ("Te quedan 2 de 4") and the reader has to
+be able to tell which two whether they are looking or listening.
+
+Two invariants a `story-data` test enforces, both about the exercise being worth doing: a yes/no page
+needs **at least two questions**, and its answers must **mix sí and no**. Two options each and no
+partial credit means an all-sí page is passed by clicking one column down the side without decoding a
+single cell.
+
+The frases live on the card *before* the questions, so the back button there reads **"Volver a las
+frases"** rather than plain "Volver" — going back is part of the exercise, not a way out of it. The
+plain-text reading of the seven sentences follows the questions as a third card. **That text is not
+in the book**, which prints them in braille and nothing else; it is there because seven sentences of
+cells is a lot to hold while answering, and it goes *after* the questions or there is nothing left to
+decode.
 
 ### Design language
 
@@ -251,8 +294,12 @@ decorative braille the reader is not expected to decode (the home page title doe
 Relevant to the design / data-model work being planned:
 
 - `Dictionary.tsx` always shows every entry in `dictionary.ts` regardless of the reader's page — it is
-  not scoped to what has actually been taught up to `?page=N`.
-- The transcription stops at the end of PDF page 13, after the proper-name exercise; the rest is still in the PDF.
+  not scoped to what has actually been taught up to `?page=N`. It also calls them all signs *"que Luis
+  y Braillinda han inventado"*, which `t` and `r` never were. That is the book's own doing and the
+  wording is left alone deliberately.
+- The transcription stops at the end of PDF page 14, after the yes/no questions; the rest is still in
+  the PDF. Page 15 is next: a recap of the letters so far, then a *"Completa, con letras comunes"*
+  exercise that is a third variation on filling in a gap.
 - Page 13's exercise asks for all fourteen names in one box, with their capitals and accents. That is a
   lot to type for one verdict, and a single slip fails the page.
 

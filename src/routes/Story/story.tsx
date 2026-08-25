@@ -4,6 +4,7 @@ import Stage from "../../components/Stage";
 import DialoguePanel from "../../components/DialoguePanel";
 import ExerciseForm from "../../components/Form";
 import BlanksForm from "../../components/BlanksForm";
+import QuestionsForm from "../../components/QuestionsForm";
 import Log from "../../components/Log";
 import Dictionary from "../../components/Dictionary";
 import { buttonStyles } from "../../components/styles";
@@ -71,6 +72,8 @@ export default function Story() {
         >
           {content.blanks ? (
             <BlanksForm pageNumber={page} blanks={content.blanks} />
+          ) : content.questions ? (
+            <QuestionsForm pageNumber={page} questions={content.questions} />
           ) : content.solution ? (
             <ExerciseForm pageNumber={page} />
           ) : (

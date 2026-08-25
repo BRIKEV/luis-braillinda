@@ -1,6 +1,6 @@
 import { twd, userEvent, screenDom, expect } from "twd-js";
 import { describe, it, beforeEach, afterEach } from "twd-js/runner";
-import { accentAt, bookContent, type Blank } from "../data/content";
+import { accentAt, bookContent, isExercise, type Blank } from "../data/content";
 
 /**
  * The fill-in-the-blank pages: braille words with one cell missing, five signs
@@ -17,7 +17,7 @@ const blanks = bookContent[blanksIndex]?.blanks ?? [];
 
 /** Somewhere with no exercise on it. `twd.visit()` does not reload, so the form
  *  would otherwise carry its picks and its verdict into the next test. */
-const restPage = bookContent.findIndex((entry) => !entry.solution && !entry.blanks) + 1;
+const restPage = bookContent.findIndex((entry) => !isExercise(entry)) + 1;
 
 const VOWELS = ["á", "é", "í", "ó", "ú"];
 

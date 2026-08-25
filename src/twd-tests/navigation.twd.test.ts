@@ -1,10 +1,10 @@
 import { twd, userEvent, screenDom, screenDomGlobal, expect } from "twd-js";
 import { describe, it, beforeEach, afterEach } from "twd-js/runner";
-import { bookContent, type Entry } from "../data/content";
-
-/** A page is an exercise when it has something to grade, typed or picked.
- *  Exercise pages replace Continuar and Volver with their answer form. */
-const isExercise = (entry: Entry) => Boolean(entry.solution ?? entry.blanks);
+/* A page is an exercise when it has something to grade, typed or picked.
+   Exercise pages replace Continuar and Volver with their answer form — and
+   `isExercise` comes from the data so a new kind of exercise cannot leave this
+   suite reasoning about two of three. */
+import { bookContent, isExercise } from "../data/content";
 import { dictionary, signName } from "../components/Braille/dictionary";
 
 /**

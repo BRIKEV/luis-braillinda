@@ -1,6 +1,6 @@
 import { twd, userEvent, screenDom, expect } from "twd-js";
 import { describe, it, beforeEach, afterEach } from "twd-js/runner";
-import { bookContent } from "../data/content";
+import { bookContent, isExercise } from "../data/content";
 
 /**
  * The "Tu turno" pages: braille to decode, a box to type the answer in, and no
@@ -32,7 +32,7 @@ const capitalPage = capitalIndex + 1;
 const capitalSolution = bookContent[capitalIndex]?.solution ?? "";
 
 /** Somewhere with no exercise on it, used to unmount the form between tests. */
-const restPage = bookContent.findIndex((entry) => !entry.solution && !entry.blanks) + 1;
+const restPage = bookContent.findIndex((entry) => !isExercise(entry)) + 1;
 
 const collapse = (text: string | null) => (text ?? "").replace(/\s+/g, " ").trim();
 

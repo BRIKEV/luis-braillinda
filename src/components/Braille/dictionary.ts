@@ -12,10 +12,12 @@ import { brailleAlphabet, type BrailleMap } from "./alphabet";
 const taught = [
   "a", "b", "d", "e", "i", "l", "m", "n", "o", "s", "u",
   // The accented vowels, in the order Luis and Braillinda invent them.
-  // "t" is not taught anywhere in the book, but "bonitas" uses it in the
-  // phrase she writes, so the reader meets it here whether or not it was
-  // introduced.
-  "á", "í", "t", "ú", "ó", "é",
+  "á", "í", "ú", "ó", "é",
+  // Letters the book never teaches but does use: "t" in "bonitas", "r" in
+  // "una buena obra" on PDF page 14. Page 15's own recap of what the reader
+  // knows lists neither, so they are grouped apart from the taught letters
+  // rather than filed under the accents as if they belonged there.
+  "t", "r",
   // Not a letter: the capital sign, invented on page 13 of the PDF.
   "^",
 ] as const;

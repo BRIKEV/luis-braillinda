@@ -66,15 +66,38 @@ export interface Blank {
   also?: string[];
 }
 
-/* The two kinds of exercise, kept apart in the type so no entry can carry
-   both. A page is an exercise when it has one of them; there is no flag. */
+/**
+ * One yes/no question about a braille text the reader has just read. The book
+ * prints them as a list with "sí no" beside each, and nothing else — so the
+ * answer is the whole of what has to be stored.
+ */
+export interface Question {
+  /** Asked in the book's own words, question marks and all. */
+  ask: string;
+
+  /** True when the answer is "sí". */
+  yes: boolean;
+}
+
+/** The two answers, exactly as they are printed on the radio and stored in the
+ *  submitted form. One place for both, so relabelling a button can never
+ *  silently stop it matching what `action.ts` grades against. */
+export const REPLIES = { yes: "Sí", no: "No" } as const;
+
+/** What a question's answer looks like as a form value. */
+export const replyTo = (question: Question) => (question.yes ? REPLIES.yes : REPLIES.no);
+
+/* The three kinds of exercise, kept apart in the type so no entry can carry
+   two. A page is an exercise when it has one of them; there is no flag. */
 type Exercise =
   // An ordinary page.
-  | { solution?: never; blanks?: never }
+  | { solution?: never; blanks?: never; questions?: never }
   // Read the braille and type back what it says. Graded case-insensitively.
-  | { solution: string; blanks?: never }
+  | { solution: string; blanks?: never; questions?: never }
   // Supply the accented vowel missing from each word.
-  | { blanks: Blank[]; solution?: never };
+  | { blanks: Blank[]; solution?: never; questions?: never }
+  // Answer sí or no about a braille text on the page before.
+  | { questions: Question[]; solution?: never; blanks?: never };
 
 /** Stage left faces right, stage right faces left, so they face each other. */
 export type Entry = Line & LeftCast & RightCast & Exercise;
@@ -83,6 +106,12 @@ export type Entry = Line & LeftCast & RightCast & Exercise;
  *  leaves empty. A story-data test proves every word has exactly one, so this
  *  never has to answer for -1. */
 export const accentAt = (word: string) => word.search(/[áéíóú]/);
+
+/** Whether a page has anything to grade. Kept here rather than rewritten at
+ *  each call site: a third kind of exercise arrived and every hand-written
+ *  `!entry.solution && !entry.blanks` was quietly one kind out of date. */
+export const isExercise = (entry: Entry) =>
+  Boolean(entry.solution ?? entry.blanks ?? entry.questions);
 
 export const bookContent: Entry[] = [
   {
@@ -804,6 +833,37 @@ export const bookContent: Entry[] = [
     author: "Tu turno",
     message: "Y escribieron estos nombres propios:<br><BRAILLE>Lola Simón Luis Elías Sonia Almudena Susana Inés Daniel Elena Babilonia Delia Emilio Solís</BRAILLE><br>¿Qué nombres han escrito?",
     solution: "Lola Simón Luis Elías Sonia Almudena Susana Inés Daniel Elena Babilonia Delia Emilio Solís",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Luis",
+    message: "Unas frases para practicar. Por supuesto que usaremos mayúsculas siempre que deban ir:<br><BRAILLE>Ella se llama Almudena</BRAILLE><br><BRAILLE>La Dama Duende es una buena obra</BRAILLE><br><BRAILLE>La blusa de Elena es de seda</BRAILLE><br><BRAILLE>Daniel llena sus bolsillos de monedas</BRAILLE><br><BRAILLE>Inés sólo bebe soda</BRAILLE><br><BRAILLE>Mi abuela Lola saluda a Emilio Solís</BRAILLE><br><BRAILLE>Sonia Ábalos lee Las Minas de Salomón</BRAILLE>",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Tu turno",
+    message: "Responde a estas preguntas:",
+    questions: [
+      { ask: "¿El nombre Elias aparece entre esas frases?", yes: false },
+      { ask: "E Inés, ¿está?", yes: true },
+      { ask: "¿Es Daniel el que llena sus bolsillos de monedas?", yes: true },
+      { ask: "¿El señor al que saluda mi abuela, tiene apellido?", yes: true },
+    ],
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  /* Not in the book, which prints these frases in braille and nothing else.
+     Seven sentences of cells is a lot to hold in your head while answering
+     four questions, so the plain reading follows them — after the questions,
+     never before, or there is nothing left to decode. */
+  {
+    author: "Narrador",
+    message: "Esto es lo que decían las frases:<br>Ella se llama Almudena<br>La Dama Duende es una buena obra<br>La blusa de Elena es de seda<br>Daniel llena sus bolsillos de monedas<br>Inés sólo bebe soda<br>Mi abuela Lola saluda a Emilio Solís<br>Sonia Ábalos lee Las Minas de Salomón",
     backdrop: "workshop",
     left: "luis",
     right: "braillinda",

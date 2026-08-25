@@ -139,4 +139,44 @@ describe("Story data", () => {
       `fill-in words that cannot be graded from the word\n${violations.join("\n")}\n`,
     ).to.equal(0);
   });
+
+  it("never lets a yes/no page be passed without reading the braille", () => {
+    const exercises = pages.filter(({ entry }) => Boolean(entry.questions));
+    const violations: string[] = [];
+    let asked = 0;
+
+    for (const { page, entry } of exercises) {
+      const questions = entry.questions ?? [];
+      asked += questions.length;
+
+      /* Two radios each and no partial credit, so a page whose answers are all
+         "sí" is passed by clicking one column down the side without decoding a
+         single cell. The book's own pages mix them; this is what stops a later
+         one from quietly not doing so. */
+      const yeses = questions.filter((question) => question.yes).length;
+      if (questions.length > 0 && (yeses === 0 || yeses === questions.length)) {
+        violations.push(
+          `page ${page}: all ${questions.length} answers are "${yeses ? "sí" : "no"}", ` +
+            `so the page is passed by answering the same thing every time`,
+        );
+      }
+
+      if (questions.length < 2) {
+        violations.push(`page ${page}: has ${questions.length} questions, and a page needs at least two`);
+      }
+
+      for (const question of questions) {
+        if (!question.ask.trim()) {
+          violations.push(`page ${page}: a question has nothing to ask`);
+        }
+      }
+    }
+
+    expect(asked, "the book has no yes/no questions at all").to.be.greaterThan(0);
+
+    expect(
+      violations.length,
+      `yes/no pages that do not make the reader read\n${violations.join("\n")}\n`,
+    ).to.equal(0);
+  });
 });
