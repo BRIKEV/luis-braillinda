@@ -318,3 +318,9 @@ stood on end, used as the spine of the Louis Braille chronology.
 
 - All user-facing copy is Spanish — keep new strings in Spanish, matching the book's wording.
 - Commit messages follow Conventional Commits (`feat:`, `fix:`, `refactor:`, `chore:`).
+- **No `Co-Authored-By` or "Generated with Claude Code" trailer** on commits here.
+- Tests are **flow tests by default** — a test walks a real path through the app. Unit tests are for
+  genuine functions with a right answer, like the braille dot patterns. See `.claude/twd-patterns.md`.
+- **Wait for an explicit go-ahead before implementing.** Answer the question that was asked, report, and
+  stop; don't start the next step or volunteer one. Transcription in particular is paced by the reader
+  getting through the PDF, so "here is what I found" is a complete turn.
