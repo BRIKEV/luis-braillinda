@@ -48,4 +48,14 @@ export const brailleAlphabet: BrailleMap = {
   'ó': '-1--11',
   'ú': '-11111',
   'ü': '1-11-1',
+
+  /* Not a letter. The capital sign is dots 4,6 and is written *before* the
+     letter it raises, which `BrailleMessage` does for you from the case of the
+     text. It is keyed like a letter only so it can be listed in the dictionary
+     and written on its own into a page as `<BRAILLE>^</BRAILLE>`. */
+  '^': '-1---1',
 };
+
+/** The key the capital sign is stored under. Nothing spells it — it is a
+ *  prefix, and `^` is simply a character no Spanish word contains. */
+export const CAPITAL = '^';

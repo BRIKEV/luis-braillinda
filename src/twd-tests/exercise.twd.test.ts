@@ -15,11 +15,21 @@ const exerciseIndex = bookContent.findIndex((entry) => Boolean(entry.solution));
 const exercisePage = exerciseIndex + 1;
 const solution = bookContent[exerciseIndex]?.solution ?? "";
 
-/** The braille the reader has to decode on that page. `BrailleMessage` lowercases
- *  what it is given, so its accessible name is lowercase too. */
+/** The braille the reader has to decode on that page. Every block before page
+ *  13 is written lowercase, so its accessible name is lowercase too. */
 const brailleWord = (
   bookContent[exerciseIndex]?.message.match(/<BRAILLE>([A-Za-z ]+)<\/BRAILLE>/)?.[1] ?? ""
 ).toLowerCase();
+
+/**
+ * The one exercise graded on its capitals: page 13, where Luis and Braillinda
+ * invent the capital sign and write proper names with it. Found by looking for
+ * the capital rather than by page number, because the rule *is* "the solution
+ * carries a capital" — there is no flag on the entry to search for instead.
+ */
+const capitalIndex = bookContent.findIndex((entry) => /[A-ZÁÉÍÓÚÑ]/.test(entry.solution ?? ""));
+const capitalPage = capitalIndex + 1;
+const capitalSolution = bookContent[capitalIndex]?.solution ?? "";
 
 /** Somewhere with no exercise on it, used to unmount the form between tests. */
 const restPage = bookContent.findIndex((entry) => !entry.solution && !entry.blanks) + 1;
@@ -111,8 +121,9 @@ describe("Story exercises", () => {
     const user = userEvent.setup();
     const typed = swapCase(solution);
 
-    // `content.ts` mixes 'baba' with 'ALA', and the action lowercases both
-    // sides. Flipping the case guarantees we are not just retyping the data.
+    // Every solution before page 13 is lowercase, and the action ignores case
+    // unless the answer itself carries a capital. Flipping the case guarantees
+    // we are not just retyping the data.
     expect(typed, "the first solution has no letters whose case can be flipped").to.not.equal(
       solution,
     );
@@ -124,5 +135,67 @@ describe("Story exercises", () => {
 
     twd.should(await screenDom.findByText("¡Correcto!"), "be.visible");
     twd.should(screenDom.getByRole("link", { name: "Continuar" }), "be.visible");
+  });
+});
+
+/**
+ * Capitals are ignored everywhere except here. The suite above proves the
+ * ignoring still works; this proves the exception does, which is the half a
+ * regression would silently take away — grading everything case-insensitively
+ * again would leave every test but these ones green.
+ */
+describe("Exercises graded on their capitals", () => {
+  beforeEach(async () => {
+    twd.clearRequestMockRules();
+    twd.clearComponentMocks();
+    await twd.visit(`/story?page=${restPage}`);
+  });
+
+  afterEach(() => {
+    twd.clearRequestMockRules();
+  });
+
+  it("turns down the right words written without their capitals", async () => {
+    const user = userEvent.setup();
+    const lowercased = capitalSolution.toLowerCase();
+
+    expect(capitalIndex, "no exercise in the book is graded on its capitals").to.not.equal(-1);
+    expect(lowercased, "that exercise's answer has no capitals to drop").to.not.equal(
+      capitalSolution,
+    );
+
+    await twd.visit(`/story?page=${capitalPage}`);
+    await user.type(screenDom.getByLabelText("¿Qué pone aquí?"), lowercased);
+    await user.click(screenDom.getByRole("button", { name: "Comprobar palabra" }));
+
+    // Every letter is right. The page is about capitals, so that is not enough.
+    twd.should(await screenDom.findByText("No es esa. Vuelve a intentarlo."), "be.visible");
+    expect(screenDom.queryByText("¡Correcto!")).to.equal(null);
+    expect(screenDom.queryByRole("link", { name: "Continuar" })).to.equal(null);
+    await twd.url().should("contain.url", `page=${capitalPage}`);
+  });
+
+  it("accepts them once the capitals are there", async () => {
+    const user = userEvent.setup();
+    await twd.visit(`/story?page=${capitalPage}`);
+
+    await user.type(screenDom.getByLabelText("¿Qué pone aquí?"), capitalSolution);
+    await user.click(screenDom.getByRole("button", { name: "Comprobar palabra" }));
+
+    twd.should(await screenDom.findByText("¡Correcto!"), "be.visible");
+    twd.should(screenDom.getByRole("link", { name: "Continuar" }), "be.visible");
+  });
+
+  it("forgives stray spaces without forgiving the capitals", async () => {
+    const user = userEvent.setup();
+    // Fourteen names in one box: a doubled or trailing space is a typing slip,
+    // not a wrong answer, and must not cost the reader the whole page.
+    const spaced = ` ${capitalSolution.replace(/ /g, "  ")} `;
+
+    await twd.visit(`/story?page=${capitalPage}`);
+    await user.type(screenDom.getByLabelText("¿Qué pone aquí?"), spaced);
+    await user.click(screenDom.getByRole("button", { name: "Comprobar palabra" }));
+
+    twd.should(await screenDom.findByText("¡Correcto!"), "be.visible");
   });
 });

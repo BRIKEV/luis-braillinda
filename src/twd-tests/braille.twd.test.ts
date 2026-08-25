@@ -25,7 +25,7 @@ const DOTS_IN_DOM_ORDER = [1, 4, 2, 5, 3, 6];
 const cell = (...dots: number[]) =>
   DOTS_IN_DOM_ORDER.map((dot) => (dots.includes(dot) ? "1" : "-")).join("");
 
-/** The signs Luis and Braillinda have invented so far. */
+/** The signs Luis and Braillinda have invented so far, letters and not. */
 const taught: Record<string, number[]> = {
   a: [1],
   b: [1, 2],
@@ -45,6 +45,9 @@ const taught: Record<string, number[]> = {
   "ú": [2, 3, 4, 5, 6],
   "ó": [3, 4, 6],
   "é": [2, 3, 4, 6],
+  // Not a letter: the capital sign, written before the letter it raises.
+  // Braillinda proposes dot 6 alone and Luis talks her up to 4 and 6.
+  "^": [4, 6],
 };
 
 /** Signs still ahead in the story, sampled across the alphabet. `ñ` is here

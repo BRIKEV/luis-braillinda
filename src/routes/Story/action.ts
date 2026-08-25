@@ -11,6 +11,21 @@ const rejected = (body: object) =>
     },
   });
 
+/* Stray spaces never cost the reader anything — fourteen names in one box is
+   a lot of typing — but capitals are graded on the one page whose answer
+   carries them.
+
+   Capitals are ignored, as they always have been — except on a page whose
+   answer bothers to carry one. Only the page that invents the capital sign has
+   any reason to care, and it says so by capitalising its own solution, so there
+   is nothing extra to declare on the entry. */
+const tidy = (text: string) => text.trim().replace(/\s+/g, " ");
+
+const matches = (solution: string, answer: string) =>
+  /[A-ZÁÉÍÓÚÜÑ]/.test(solution)
+    ? tidy(solution) === tidy(answer)
+    : tidy(solution).toLowerCase() === tidy(answer).toLowerCase();
+
 export async function action({ request }: ActionFunctionArgs) {
   const body = await request.formData();
   const page = body.get("page") as string;
@@ -32,8 +47,5 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const userSolution = body.get("solution") as string;
-  if (findContent.solution?.toLowerCase() === userSolution.toLowerCase()) {
-    return { success: true };
-  }
-  return rejected({});
+  return matches(findContent.solution ?? "", userSolution) ? { success: true } : rejected({});
 }

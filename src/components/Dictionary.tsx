@@ -7,6 +7,9 @@ interface Props {
   onClose: () => void;
 }
 
+/** Signs that are not letters have nothing to print as their own caption. */
+const NAMES: Record<string, string> = { "^": "mayúscula" };
+
 export default function Dictionary({ isOpen, onClose }: Props) {
   const letters = Object.keys(dictionary);
 
@@ -19,7 +22,13 @@ export default function Dictionary({ isOpen, onClose }: Props) {
         {letters.map((letter) => (
           <li key={letter} className="flex flex-col items-center gap-2">
             <BrailleCharacter character={letter} size="lg" />
-            <span className="font-display text-xl font-semibold text-ink">{letter}</span>
+            <span
+              className={`font-display font-semibold text-ink text-center ${
+                NAMES[letter] ? "text-sm" : "text-xl"
+              }`}
+            >
+              {NAMES[letter] ?? letter}
+            </span>
           </li>
         ))}
       </ul>

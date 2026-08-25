@@ -1,5 +1,5 @@
 import { BrailleCharacter } from "./BrailleCharacter";
-import type { BrailleMap } from "./alphabet";
+import { CAPITAL, type BrailleMap } from "./alphabet";
 
 interface Props {
   message: string;
@@ -23,15 +23,33 @@ export const BrailleMessage = ({ message, map, size = "md" }: Props) => {
     >
       {words.map((word, wordIndex) => (
         <span key={wordIndex} className={`inline-flex ${gaps[size]}`}>
-          {word.split("").map((char, charIndex) => (
-            <BrailleCharacter
-              key={charIndex}
-              character={char.toLowerCase()}
-              map={map}
-              order={cell++}
-              size={size}
-            />
-          ))}
+          {word.split("").flatMap((char, charIndex) => {
+            const letter = char.toLowerCase();
+            /* A capital is two cells: the sign, then the letter. Written from
+               the case of the text, so a page says `Lola` and gets it right. */
+            const cells =
+              char === letter
+                ? []
+                : [
+                    <BrailleCharacter
+                      key={`${charIndex}-capital`}
+                      character={CAPITAL}
+                      map={map}
+                      order={cell++}
+                      size={size}
+                    />,
+                  ];
+            return [
+              ...cells,
+              <BrailleCharacter
+                key={charIndex}
+                character={letter}
+                map={map}
+                order={cell++}
+                size={size}
+              />,
+            ];
+          })}
           {wordIndex < words.length - 1 && (
             <span aria-hidden="true" className={`block ${spaces[size]}`} />
           )}

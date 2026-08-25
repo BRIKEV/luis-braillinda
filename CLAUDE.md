@@ -50,6 +50,10 @@ State lives entirely in the URL query string — there is no client store:
 
 Navigation is `<Link to={{ search: '?page=N' }} preventScrollReset>` rendered *through* `Button`.
 
+Grading ignores case **unless the solution itself carries a capital** — only the page that invents the
+capital sign has any reason to care, and it says so by capitalising its own answer, so there is no flag
+on the entry. Stray and repeated spaces are always forgiven.
+
 `action.ts` grades both kinds of exercise and returns `{success:true}` or a **400 JSON response**
 `{success:false}`. `Form.tsx` and `BlanksForm.tsx` read both through `useFetcher`, so a wrong answer
 is a deliberate non-2xx that the fetcher surfaces as data. The fill-in reply also carries
@@ -70,9 +74,10 @@ They are a union in the type, so no entry can carry both.
 
 `message` carries two inline markup forms, parsed at render time by `src/components/Messages.tsx`:
 
-- `<BRAILLE>texto</BRAILLE>` → replaced by a `<BrailleMessage>`. The regex is `/[A-Za-z ]+/` — **only
-  unaccented letters and spaces**; punctuation, digits or accents inside the tag will not match and the
-  tag leaks through as literal text.
+- `<BRAILLE>texto</BRAILLE>` → replaced by a `<BrailleMessage>`. The class is
+  `[A-Za-zÁÉÍÓÚÜÑáéíóúüñ ^]` — letters, accents, spaces and the capital sentinel; punctuation or digits
+  inside the tag will not match and the tag leaks through as literal text.
+  **Case is meaningful**: an uppercase letter renders as two cells, the capital sign then the letter.
 - `<br>` → line break.
 
 `author` is a plain string that drives two separate lookups, both of which need updating when a new
@@ -98,13 +103,22 @@ index:  0 1     dots:  1 4
 
 So `l: '1-1-1-'` = dots 1,2,3 and `d: '11-1--'` = dots 1,4,5.
 
-The dictionary intentionally contains **only the 11 letters the story has taught so far**
-(`a b d e i l m n o s u`). Any character missing from it renders the literal string
+The dictionary intentionally contains **only the signs the story has taught so far** — 18 of them now,
+the letters plus the capital sign. Any character missing from it renders the literal string
 `Invalid character`, so a `<BRAILLE>` block must never use a letter the story hasn't introduced yet —
 extend `dictionary.ts` in the same change that adds the story page teaching that letter.
 
 `BrailleMessage` splits on spaces, renders each word as a run of cells, and inserts an empty spacer cell
-between words.
+between words. It also expands capitals: an uppercase letter emits the **capital sign** (dots 4,6,
+key `^` in `alphabet.ts`) before the letter's own cell, which is why `parseMessage` no longer folds
+case away. The sign is a prefix, not a letter — `^` is just a character no Spanish word contains, and
+it exists as a key so the sign can be listed in the Diccionario and written on its own into a page as
+`<BRAILLE>^</BRAILLE>`, which page 13 does when Luis invents it.
+
+Every braille block before page 13 is written **lowercase**. They were ALL-CAPS until the capital sign
+landed, which was harmless only because the renderer folded case; leaving them would have printed a
+capital sign before every letter of `el sol sale al alba el lobo lo sabe`, on pages where the story has
+not invented the sign yet. Keep new blocks lowercase unless a capital is genuinely meant.
 
 ### UI stack
 
@@ -219,9 +233,9 @@ Relevant to the design / data-model work being planned:
 
 - `Dictionary.tsx` always shows every entry in `dictionary.ts` regardless of the reader's page — it is
   not scoped to what has actually been taught up to `?page=N`.
-- The transcription stops at the end of PDF page 12, after the accented-vowel fill-in; the rest is still in the PDF.
-- `content.ts` currently mixes cases in `solution` values (`'baba'` vs `'ALA'`); the action lowercases
-  both sides, so this is harmless but inconsistent.
+- The transcription stops at the end of PDF page 13, after the proper-name exercise; the rest is still in the PDF.
+- Page 13's exercise asks for all fourteen names in one box, with their capitals and accents. That is a
+  lot to type for one verdict, and a single slip fails the page.
 
 ## Illustrations
 

@@ -68,7 +68,13 @@ describe("Story data", () => {
       const shown = collapse(blocksIn(entry.message).join(" "));
       const answer = collapse(entry.solution ?? "");
 
-      if (shown.toLowerCase() !== answer.toLowerCase()) {
+      /* Capitals are graded from page 13 on, where the capital sign is
+         invented — so an answer that carries one has to be shown with one, or
+         the reader is asked to type a sign the page never displayed. */
+      const strict = /[A-ZÁÉÍÓÚÜÑ]/.test(answer);
+      const same = strict ? shown === answer : shown.toLowerCase() === answer.toLowerCase();
+
+      if (!same) {
         violations.push(
           `page ${page}: the braille reads "${shown}" but the solution is "${entry.solution}"`,
         );

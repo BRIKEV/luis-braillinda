@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 import { BrailleMessage } from "./Braille/BrailleMessage";
 
 /* Accented vowels are part of the alphabet from the "vocales acentuadas"
-   section onward. An accent outside this class does not fail loudly — the
-   block stops matching and the literal <BRAILLE> tag leaks onto the page. */
-const braillePattern = /<BRAILLE>([A-Za-zÁÉÍÓÚÜÑáéíóúüñ ]+)<\/BRAILLE>/g;
+   section onward, and `^` is the capital sign written on its own. A character
+   outside this class does not fail loudly — the block stops matching and the
+   literal <BRAILLE> tag leaks onto the page. */
+const braillePattern = /<BRAILLE>([A-Za-zÁÉÍÓÚÜÑáéíóúüñ ^]+)<\/BRAILLE>/g;
 const lineBreakPattern = /<br>/g;
 
 /**
@@ -25,7 +26,9 @@ export function parseMessage(message: string, size: "sm" | "md" | "lg" = "md") {
 
     if (lastIndex < matchIndex) parts.push(message.substring(lastIndex, matchIndex));
     parts.push(
-      <BrailleMessage key={`braille-${index}`} message={characters.toLowerCase()} size={size} />,
+      /* Case is kept, not folded away: from page 13 on it is what tells
+         `BrailleMessage` to raise a letter with the capital sign. */
+      <BrailleMessage key={`braille-${index}`} message={characters} size={size} />,
     );
     lastIndex = matchIndex + fullMatch.length;
   }
