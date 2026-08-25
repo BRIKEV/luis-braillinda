@@ -33,8 +33,14 @@ warning: `vite.config.ts` uses `__dirname`, unsupported by Vite's future native 
 
 ### Routing and data flow
 
-`src/main.tsx` → `RouterProvider` → `src/routes/routes.tsx` (`createBrowserRouter`). Two routes: `/`
-(Home) and `/story` (with a colocated `loader.ts` and `action.ts` in `src/routes/Story/`).
+`src/main.tsx` → `RouterProvider` → `src/routes/routes.tsx` (`createBrowserRouter`). Three routes: `/`
+(Home), `/louis-braille` (the source book's closing chapter, read from `src/data/louisBraille.ts`) and
+`/story` (with a colocated `loader.ts` and `action.ts` in `src/routes/Story/`).
+
+There is no layout route. `src/components/Footer.tsx` is rendered by Home and `/louis-braille` as a
+**sibling of `<main>`**, not a child — a `<footer>` nested inside `<main>` is not exposed as the
+`contentinfo` landmark, and that footer is where the app says the story is Carmen Roig's and the ONCE's
+and that this adaptation is not official. `/story` deliberately has no footer: it is a full-bleed stage.
 
 State lives entirely in the URL query string — there is no client store:
 
@@ -253,6 +259,27 @@ Two conventions worth not rediscovering: prompts must avoid "coloured pencil"
 and "paper grain" (that language produces crayon output — the anchor is smooth
 painterly gouache), and characters are generated on flat magenta with no glow or
 sparkles, since the glow is added in CSS so it can adapt per background.
+
+## Attribution
+
+The book is not ours, and the app says so in three places that must not quietly erode:
+
+- **Home, «El libro»** — the title, Carmen Roig, and the book's own copyright page: *© Organización
+  Nacional de Ciegos Españoles (ONCE), Madrid, 2002. ISBN 84-484-0246-4.* The ONCE published it as the
+  *edición conmemorativa del ciento cincuenta aniversario de la muerte de Louis Braille*.
+- **The footer**, on every page that has one — whose work the story is, and that this adaptation is
+  **not** an official ONCE product. Said once per page: don't repeat it in `El libro` as well.
+- **`/louis-braille`** — the chapter's own source note, plus the commemoration line.
+
+Every one of those links to the book itself, not to the page that lists it:
+`https://www.once.es/servicios-sociales/braille/documentos-braille/curso-de-autoaprendizaje-de-braille-pdf/download`.
+The project exists because of the ONCE's
+[Aprender braille](https://www.once.es/servicios-sociales/braille/aprender-braille) page; that framing —
+*quien ve también puede aprender braille, leyéndolo visualmente* — is the landing's opening argument.
+
+`a.link` is honey, which is 1.6:1 on parchment and unreadable. Links on a `.paper` surface use
+**`a.link-paper`** (ink, 13.6:1, poppy on hover at 4.6:1). `.dot-rule-v` is the title-page dot border
+stood on end, used as the spine of the Louis Braille chronology.
 
 ## Conventions
 

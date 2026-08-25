@@ -150,6 +150,15 @@
   opacity: 0.4;
 }
 
+/* The same border stood on end — the spine of a chronology. Its own rule rather
+   than a rotation so it inherits the parent's height instead of its width. */
+.dot-rule-v {
+  width: 14px;
+  background-image: radial-gradient(circle, currentColor 1.25px, transparent 1.35px);
+  background-size: 7px 9px;
+  opacity: 0.4;
+}
+
 a.link {
   color: var(--color-honey);
   font-weight: 700;
@@ -160,6 +169,20 @@ a.link {
 
 a.link:hover {
   color: var(--color-parchment);
+}
+
+/* The same link on a parchment surface. Honey on paper is 1.6:1 — unreadable —
+   so it is ink underlined (13.6:1), going to poppy on hover (4.6:1). */
+a.link-paper {
+  color: var(--color-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a.link-paper:hover {
+  color: var(--color-poppy);
 }
 
 /* Braillinda's artwork faces right; she is staged on the right facing in. */

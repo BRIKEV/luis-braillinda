@@ -3,9 +3,9 @@ import { describe, it, beforeEach, afterEach } from "twd-js/runner";
 
 /**
  * Flows for the landing page. A reader arrives here knowing nothing about
- * braille: they read the invitation, then either start the story or follow the
- * links out to the ONCE. Everything the page needs lives in the component, so
- * there is nothing to mock.
+ * braille: they read the invitation, then either start the story, read who
+ * Louis Braille was, or follow the links out to the ONCE. Everything the page
+ * needs lives in the component, so there is nothing to mock.
  */
 describe("Home page", () => {
   beforeEach(() => {
@@ -37,7 +37,6 @@ describe("Home page", () => {
       );
 
       twd.should(screenDom.getByRole("link", { name: "Comenzar la historia" }), "be.visible");
-      twd.should(screenDom.getByText("Son 11 signos para empezar"), "be.visible");
 
       // Braillinda and the meadow are atmosphere: the text already introduces
       // her, so neither reaches assistive tech. Only the braille title does.
@@ -59,22 +58,70 @@ describe("Home page", () => {
         "be.visible",
       );
 
-      const download = screenDom.getByRole("link", { name: "Descargar el libro" });
+      // The book itself, not the page that lists it. Both ONCE links say out
+      // loud that they leave the site, so their accessible names are not the
+      // visible text.
+      const download = screenDom.getByRole("link", {
+        name: "Descargar el libro en PDF desde la ONCE (abre en una pestaña nueva)",
+      });
       twd.should(
         download,
         "have.attr",
         "href",
-        "https://www.once.es/servicios-sociales/braille/aprender-braille",
+        "https://www.once.es/servicios-sociales/braille/documentos-braille/curso-de-autoaprendizaje-de-braille-pdf/download",
       );
       twd.should(download, "have.attr", "target", "_blank");
 
-      // The second link says out loud that it leaves the site, so its
-      // accessible name is not the visible text.
       const once = screenDom.getByRole("link", {
         name: "El braille en la web de la ONCE (abre en una pestaña nueva)",
       });
       twd.should(once, "have.attr", "href", "https://www.once.es/servicios-sociales/braille");
       twd.should(once, "have.attr", "target", "_blank");
+
+      // Whose work this is, in the words of the book's own copyright page.
+      twd.should(screenDom.getByText(/ISBN 84-484-0246-4/), "be.visible");
+    });
+
+    it("summarises who Louis Braille was, with only the dates the book gives", async () => {
+      await twd.visit("/");
+
+      twd.should(
+        screenDom.getByRole("heading", { level: 2, name: "Quién fue Louis Braille" }),
+        "be.visible",
+      );
+      twd.should(screenDom.getByText(/Louis Braille no nació ciego/i), "be.visible");
+
+      // Seven milestones, every one of them a year the chapter states outright.
+      const milestones = screenDom.getAllByRole("listitem");
+      expect(milestones.length).to.equal(7);
+      twd.should(screenDom.getByText("1809"), "be.visible");
+      twd.should(screenDom.getByText("1827"), "be.visible");
+      twd.should(screenDom.getByText("1878"), "be.visible");
+
+      const chapter = screenDom.getByRole("link", { name: "Leer su historia completa" });
+      twd.should(chapter, "have.attr", "href", "/louis-braille");
+    });
+
+    it("credits the book and its adaptation in the footer", async () => {
+      await twd.visit("/");
+
+      // Said once per page, and only here — the footer is on every page.
+      twd.should(
+        screenDom.getByText(/no es un producto oficial de la ONCE/),
+        "be.visible",
+      );
+      twd.should(screenDom.getByText(/Kevin Julián Martínez Escobar/), "be.visible");
+
+      const linkedin = screenDom.getByRole("link", {
+        name: "Kevin Julián Martínez Escobar en LinkedIn (abre en una pestaña nueva)",
+      });
+      twd.should(linkedin, "have.attr", "href", "https://www.linkedin.com/in/kevinccbsg");
+      twd.should(linkedin, "have.attr", "target", "_blank");
+
+      const repo = screenDom.getByRole("link", {
+        name: "Código de esta web en GitHub (abre en una pestaña nueva)",
+      });
+      twd.should(repo, "have.attr", "href", "https://github.com/BRIKEV/luis-braillinda");
     });
   });
 
