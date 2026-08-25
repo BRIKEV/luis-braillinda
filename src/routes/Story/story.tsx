@@ -3,6 +3,7 @@ import { BookA, ChevronLeft, History, Home } from "lucide-react";
 import Stage from "../../components/Stage";
 import DialoguePanel from "../../components/DialoguePanel";
 import ExerciseForm from "../../components/Form";
+import BlanksForm from "../../components/BlanksForm";
 import Log from "../../components/Log";
 import Dictionary from "../../components/Dictionary";
 import { buttonStyles } from "../../components/styles";
@@ -68,7 +69,9 @@ export default function Story() {
           message={content.message}
           progress={page / bookContent.length}
         >
-          {content.solution ? (
+          {content.blanks ? (
+            <BlanksForm pageNumber={page} blanks={content.blanks} />
+          ) : content.solution ? (
             <ExerciseForm pageNumber={page} />
           ) : (
             <div className="flex flex-wrap items-center gap-3">

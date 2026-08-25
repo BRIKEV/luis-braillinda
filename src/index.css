@@ -132,6 +132,16 @@
     0 0.5px 0 rgb(255 255 255 / 0.55);
 }
 
+/* The gap in a fill-in exercise. Every other cell on the page is paper that
+   has already been embossed; this one has not been written yet, so it is the
+   one braille cell drawn pressed *into* the page rather than raised out of it.
+   Dashed at #94815f, the same 3.2:1 edge the empty dots use. */
+.braille-blank {
+  background-color: rgb(42 31 22 / 0.06);
+  border: 1px dashed #94815f;
+  box-shadow: inset 0 1px 3px rgb(42 31 22 / 0.16);
+}
+
 /* The dot border from the book's own title page (page 2 of the PDF). */
 .dot-rule {
   height: 14px;

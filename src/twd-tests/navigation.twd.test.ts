@@ -1,6 +1,10 @@
 import { twd, userEvent, screenDom, screenDomGlobal, expect } from "twd-js";
 import { describe, it, beforeEach, afterEach } from "twd-js/runner";
-import { bookContent } from "../data/content";
+import { bookContent, type Entry } from "../data/content";
+
+/** A page is an exercise when it has something to grade, typed or picked.
+ *  Exercise pages replace Continuar and Volver with their answer form. */
+const isExercise = (entry: Entry) => Boolean(entry.solution ?? entry.blanks);
 import { dictionary } from "../components/Braille/dictionary";
 
 /**
@@ -16,7 +20,7 @@ import { dictionary } from "../components/Braille/dictionary";
  *  are both on screen. Exercise pages replace them with the answer form. */
 const walkIndex = bookContent.findIndex(
   (entry, index) =>
-    !entry.solution && index + 1 < bookContent.length && !bookContent[index + 1].solution,
+    !isExercise(entry) && index + 1 < bookContent.length && !isExercise(bookContent[index + 1]),
 );
 const walkPage = walkIndex + 1;
 
@@ -35,7 +39,7 @@ const firstProse = (message: string) =>
 /** The last page with prose on it and no exercise: far enough in that landing
  *  there proves the URL chose the page rather than the loader's default. */
 const deepIndex = bookContent.reduce(
-  (found, entry, index) => (!entry.solution && firstProse(entry.message) ? index : found),
+  (found, entry, index) => (!isExercise(entry) && firstProse(entry.message) ? index : found),
   0,
 );
 const deepPage = deepIndex + 1;

@@ -47,15 +47,42 @@ interface Line {
    *  cells, `<br>` a line break. Only letters the story has already taught. */
   message: string;
 
-  /** Present means this page is an exercise and the reader must type this.
-   *  Compared case-insensitively. */
-  solution?: string;
-
   backdrop: Backdrop;
 }
 
+/**
+ * One item of a fill-in-the-blank exercise. Exactly one letter of `word` is an
+ * accented vowel, and that is the cell drawn empty — so where the gap goes and
+ * what fills it both come from the word itself, with nothing to keep in sync.
+ */
+export interface Blank {
+  word: string;
+
+  /** Other words the same gap can spell. The book prints the gap empty, so it
+   *  never states an answer of its own: "d?melo" is dámelo, dímelo and démelo
+   *  alike, and failing a reader who wrote a real word would teach them wrong.
+   *  Listed only where the alternative is ordinary vocabulary — marginal
+   *  conjugations of rare verbs are not worth carrying. */
+  also?: string[];
+}
+
+/* The two kinds of exercise, kept apart in the type so no entry can carry
+   both. A page is an exercise when it has one of them; there is no flag. */
+type Exercise =
+  // An ordinary page.
+  | { solution?: never; blanks?: never }
+  // Read the braille and type back what it says. Graded case-insensitively.
+  | { solution: string; blanks?: never }
+  // Supply the accented vowel missing from each word.
+  | { blanks: Blank[]; solution?: never };
+
 /** Stage left faces right, stage right faces left, so they face each other. */
-export type Entry = Line & LeftCast & RightCast;
+export type Entry = Line & LeftCast & RightCast & Exercise;
+
+/** Where the one accented vowel sits in a `Blank.word` — the cell the book
+ *  leaves empty. A story-data test proves every word has exactly one, so this
+ *  never has to answer for -1. */
+export const accentAt = (word: string) => word.search(/[áéíóú]/);
 
 export const bookContent: Entry[] = [
   {
@@ -633,7 +660,79 @@ export const bookContent: Entry[] = [
   },
   {
     author: "Luis",
-    message: "Pensemos en palabras con «é» tónica:<br>bebé = <BRAILLE>bebé</BRAILLE><br>no sé = <BRAILLE>no sé</BRAILLE>",
+    message: "Pensemos en palabras con «é» tónica:<br>bebé = <BRAILLE>bebé</BRAILLE><br>no sé = <BRAILLE>no sé</BRAILLE><br>edén = <BRAILLE>edén</BRAILLE><br>doblé = <BRAILLE>doblé</BRAILLE>",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Luis",
+    message: "¿Qué te parece si las usamos todas?",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Braillinda",
+    message: "Bueno, pero mejor piensa tú.",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Luis",
+    message: "Primero unas sílabas para irnos acostumbrando:<br>lá = <BRAILLE>lá</BRAILLE><br>lé = <BRAILLE>lé</BRAILLE><br>lí = <BRAILLE>lí</BRAILLE><br>ló = <BRAILLE>ló</BRAILLE><br>lú = <BRAILLE>lú</BRAILLE><br>má = <BRAILLE>má</BRAILLE><br>mé = <BRAILLE>mé</BRAILLE><br>mí = <BRAILLE>mí</BRAILLE><br>mó = <BRAILLE>mó</BRAILLE><br>mú = <BRAILLE>mú</BRAILLE>",
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Tu turno",
+    message: "Ahora te toca trabajar a ti: dibuja los puntitos que forman las vocales acentuadas donde corresponda.",
+    blanks: [
+      { word: "allí", also: ["allá"] },
+      { word: "dámelo", also: ["dímelo", "démelo"] },
+      { word: "alelí" },
+      { word: "balón", also: ["balín"] },
+      { word: "menú", also: ["mené"] },
+      { word: "díselo", also: ["dáselo", "déselo"] },
+      { word: "íbamos" },
+      { word: "blasón" },
+    ],
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Tu turno",
+    message: "Ahora te toca trabajar a ti: dibuja los puntitos que forman las vocales acentuadas donde corresponda.",
+    blanks: [
+      { word: "sílaba" },
+      { word: "lulú" },
+      { word: "lámina" },
+      { word: "dudó", also: ["dudé"] },
+      { word: "lío" },
+      { word: "dominó", also: ["dominé"] },
+      { word: "úsalo", also: ["ásalo"] },
+      { word: "mamá" },
+    ],
+    backdrop: "workshop",
+    left: "luis",
+    right: "braillinda",
+  },
+  {
+    author: "Tu turno",
+    message: "Ahora te toca trabajar a ti: dibuja los puntitos que forman las vocales acentuadas donde corresponda.",
+    blanks: [
+      { word: "ébano" },
+      { word: "sandía" },
+      { word: "limón" },
+      { word: "únelo" },
+      { word: "sábado" },
+      { word: "melón" },
+      { word: "sábana" },
+      { word: "sumé", also: ["sumó"] },
+    ],
     backdrop: "workshop",
     left: "luis",
     right: "braillinda",

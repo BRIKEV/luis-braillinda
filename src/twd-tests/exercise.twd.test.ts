@@ -22,7 +22,7 @@ const brailleWord = (
 ).toLowerCase();
 
 /** Somewhere with no exercise on it, used to unmount the form between tests. */
-const restPage = bookContent.findIndex((entry) => !entry.solution) + 1;
+const restPage = bookContent.findIndex((entry) => !entry.solution && !entry.blanks) + 1;
 
 const collapse = (text: string | null) => (text ?? "").replace(/\s+/g, " ").trim();
 

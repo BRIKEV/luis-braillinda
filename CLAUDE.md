@@ -44,17 +44,23 @@ State lives entirely in the URL query string — there is no client store:
 
 Navigation is `<Link to={{ search: '?page=N' }} preventScrollReset>` rendered *through* `Button`.
 
-`action.ts` grades exercises: compares `formData.solution` against `bookContent[page-1].solution`
-lowercased, returns `{success:true}` or a **400 JSON response** `{success:false}`. `Form.tsx` reads
-both through `useFetcher`, so a wrong answer is a deliberate non-2xx that the fetcher surfaces as data.
+`action.ts` grades both kinds of exercise and returns `{success:true}` or a **400 JSON response**
+`{success:false}`. `Form.tsx` and `BlanksForm.tsx` read both through `useFetcher`, so a wrong answer
+is a deliberate non-2xx that the fetcher surfaces as data. The fill-in reply also carries
+`wrong: number[]` — with eight words on a page, "no" without saying which is not usable.
 
 ### Content model (`src/data/content.ts`)
 
-The whole book is one ordered `Content[]`; array position *is* the page number. Each entry:
+The whole book is one ordered `Entry[]`; array position *is* the page number. Every entry carries
+`author`, `message` and `backdrop` plus its own staging (see **Story staging**), and at most one of
+the two exercise fields:
 
 ```ts
-{ message: string; author: string; solution: string | null; exercise: boolean }
+solution: string      // read the braille, type it back. Graded case-insensitively.
+blanks: Blank[]       // supply the accented vowel missing from each word.
 ```
+
+They are a union in the type, so no entry can carry both.
 
 `message` carries two inline markup forms, parsed at render time by `src/components/Messages.tsx`:
 
@@ -136,8 +142,33 @@ unions, so a typo fails the build.
 - `parseMessage` is shared by the panel and the history dialog so both expand
   `<BRAILLE>` and `<br>` identically.
 
-An entry is an exercise when it has a `solution` — there is no separate flag.
+An entry is an exercise when it has a `solution` or `blanks` — there is no separate flag.
 The old `exercise: boolean` was redundant with it across all 69 entries.
+
+### The fill-in exercise (`BlanksForm.tsx`, `BlankItem.tsx`)
+
+Page 12 of the PDF asks the reader to *"dibuja los puntitos que forman las vocales acentuadas donde
+corresponda"*: braille words with one cell left empty, and the reader supplies the accented vowel.
+
+A `Blank` is just the finished word. Exactly one of its letters is an accented vowel, so **where the
+gap goes and what fills it are both read off the word** — `accentAt()` in `content.ts` — and there is
+no position to keep in sync with the answer. A `story-data` test enforces the one-accent rule.
+
+`also` lists other words the same gap spells. The book prints the gap empty, so **it never states an
+answer of its own**: `d?melo` is *dámelo*, *dímelo* and *démelo* alike. Grading a reader wrong for
+writing a real Spanish word would teach them wrong, so ordinary alternatives are accepted; marginal
+conjugations of rare verbs are not carried. Every alternative must differ from the word *only* at the
+gap — the action derives the accepted signs by reading each one's accented vowel, and a test enforces it.
+
+Each word is a `<fieldset>` of five native radios labelled with their braille cells. Radios rather than
+a `<select>` because five options belong all-visible, and because an option's text cannot carry a
+braille cell — the dot pattern is the thing being taught. The visual braille is `aria-hidden` (drawn
+dots offer a screen-reader user nothing) and the legend carries the word instead, gap named:
+`Palabra 2: d, hueco, m, e, l, o`. That is real access to the exercise, but it is not the same
+experience, and the code says so rather than implying otherwise.
+
+The book prints all 24 words in one block; they are split across three entries so the check button is
+never far. Splitting is a rendering choice — it is still one PDF page.
 
 ### Design language
 
@@ -148,7 +179,8 @@ Two registers, taken from the story itself:
 
 Relief (`.braille-cell`, `.braille-dot-raised`, `.braille-dot-empty`) is reserved for braille, which
 genuinely is embossed. **Never apply it to buttons or inputs** — those stay flat and high-contrast so
-the tactile conceit costs nobody usability.
+the tactile conceit costs nobody usability. `.braille-blank` is the one cell pressed *into* the page
+rather than raised out of it: the gap in a fill-in, paper not yet written on.
 
 Colours are sampled from the project's own artwork, not invented: honey lantern light, Braillinda's
 sage dress, the teal dusk window, with poppy red carried over from the amapolas of the source book.
@@ -181,7 +213,7 @@ Relevant to the design / data-model work being planned:
 
 - `Dictionary.tsx` always shows every entry in `dictionary.ts` regardless of the reader's page — it is
   not scoped to what has actually been taught up to `?page=N`.
-- The transcription stops mid-story, at Braillinda asking about accented vowels; the rest is still in the PDF.
+- The transcription stops at the end of PDF page 12, after the accented-vowel fill-in; the rest is still in the PDF.
 - `content.ts` currently mixes cases in `solution` values (`'baba'` vs `'ALA'`); the action lowercases
   both sides, so this is harmless but inconsistent.
 
